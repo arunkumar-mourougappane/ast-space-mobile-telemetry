@@ -4,15 +4,16 @@ Generates detailed trajectory and signal strength reports for AST SpaceMobile sa
 over Midland, TX between December 7-12, 2025
 """
 
-import numpy as np
-from datetime import datetime, timedelta
-from skyfield.api import load, EarthSatellite, wgs84
-from skyfield.toposlib import GeographicPosition
-import json
-import requests
-from typing import List, Dict, Tuple
-import pandas as pd
 import argparse
+import json
+from datetime import datetime, timedelta
+from typing import Dict, List, Tuple
+
+import numpy as np
+import pandas as pd
+import requests
+from skyfield.api import EarthSatellite, load, wgs84
+from skyfield.toposlib import GeographicPosition
 
 # AST SpaceMobile satellites
 # Based on publicly available information, AST SpaceMobile has launched:

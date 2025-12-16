@@ -4,11 +4,12 @@ Creates detailed markdown report with pass tables and signal strength graphs
 """
 
 import json
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from datetime import datetime, timedelta
-import numpy as np
 import os
+from datetime import datetime, timedelta
+
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Create output directories
 os.makedirs("pass_graphs", exist_ok=True)

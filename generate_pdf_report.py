@@ -3,12 +3,13 @@ AST SpaceMobile PDF Report Generator
 Converts the detailed markdown report into a stylized PDF with embedded images
 """
 
-import markdown
-import os
-from datetime import datetime
 import base64
+import os
 import re
 from collections import defaultdict
+from datetime import datetime
+
+import markdown
 
 
 def image_to_base64(image_path):
@@ -517,12 +518,12 @@ def generate_pdf_reportlab(md_file, output_pdf):
     Generate PDF using ReportLab (fallback method)
     """
     try:
+        from reportlab.lib import colors
+        from reportlab.lib.enums import TA_CENTER
         from reportlab.lib.pagesizes import letter
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
         from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
-        from reportlab.lib import colors
-        from reportlab.lib.enums import TA_CENTER
 
         print("Using ReportLab for PDF generation...")
 
