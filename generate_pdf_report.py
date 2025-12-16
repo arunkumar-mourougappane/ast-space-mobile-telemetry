@@ -129,13 +129,13 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
                 color: #666;
             }}
         }}
-        
+
         * {{
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }}
-        
+
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 10pt;
@@ -143,7 +143,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             color: #333;
             background: white;
         }}
-        
+
         h1 {{
             font-size: 24pt;
             font-weight: 700;
@@ -154,7 +154,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             border-bottom: 3px solid #2563eb;
             page-break-after: avoid;
         }}
-        
+
         h2 {{
             font-size: 18pt;
             font-weight: 600;
@@ -165,7 +165,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             border-top: 2px solid #e5e7eb;
             page-break-after: avoid;
         }}
-        
+
         h3 {{
             font-size: 14pt;
             font-weight: 600;
@@ -174,7 +174,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             margin-bottom: 10pt;
             page-break-after: avoid;
         }}
-        
+
         h4 {{
             font-size: 12pt;
             font-weight: 600;
@@ -184,31 +184,31 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             page-break-after: avoid;
             page-break-before: auto;
         }}
-        
+
         /* Keep pass sections together within one page */
         h4 + p {{
             page-break-inside: avoid;
         }}
-        
+
         p {{
             margin-bottom: 8pt;
             text-align: justify;
         }}
-        
+
         strong {{
             font-weight: 600;
             color: #1a1a1a;
         }}
-        
+
         ul, ol {{
             margin-left: 20pt;
             margin-bottom: 10pt;
         }}
-        
+
         li {{
             margin-bottom: 5pt;
         }}
-        
+
         table {{
             width: 100%;
             border-collapse: collapse;
@@ -218,32 +218,32 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             page-break-before: avoid;
             background: white;
         }}
-        
+
         thead {{
             background: #2563eb;
             color: white;
             font-weight: 600;
         }}
-        
+
         th {{
             padding: 6pt 4pt;
             text-align: left;
             border: 1px solid #2563eb;
         }}
-        
+
         td {{
             padding: 4pt 4pt;
             border: 1px solid #e5e7eb;
         }}
-        
+
         tbody tr:nth-child(even) {{
             background: #f9fafb;
         }}
-        
+
         tbody tr:hover {{
             background: #f3f4f6;
         }}
-        
+
         img {{
             max-width: 90%;
             height: auto;
@@ -256,14 +256,14 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             padding: 4pt;
             background: white;
         }}
-        
+
         hr {{
             border: none;
             border-top: 1px solid #e5e7eb;
             margin: 12pt 0;
             page-break-after: always;
         }}
-        
+
         code {{
             background: #f3f4f6;
             padding: 2pt 4pt;
@@ -272,7 +272,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             font-size: 9pt;
             color: #dc2626;
         }}
-        
+
         pre {{
             background: #1f2937;
             color: #f3f4f6;
@@ -285,13 +285,13 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             line-height: 1.4;
             page-break-inside: avoid;
         }}
-        
+
         pre code {{
             background: transparent;
             padding: 0;
             color: #f3f4f6;
         }}
-        
+
         blockquote {{
             border-left: 4px solid #2563eb;
             padding-left: 12pt;
@@ -299,24 +299,24 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             color: #4b5563;
             font-style: italic;
         }}
-        
+
         .page-break {{
             page-break-before: always;
         }}
-        
+
         /* Title page styling */
         .title-page {{
             text-align: center;
             padding-top: 100pt;
             page-break-after: always;
         }}
-        
+
         .title-page h1 {{
             font-size: 32pt;
             margin-bottom: 12pt;
             border: none;
         }}
-        
+
         .title-page h2 {{
             font-size: 20pt;
             color: #6b7280;
@@ -324,13 +324,13 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             margin-bottom: 24pt;
             border: none;
         }}
-        
+
         .title-page .metadata {{
             margin-top: 48pt;
             font-size: 11pt;
             color: #4b5563;
         }}
-        
+
         /* Info boxes */
         .info-box {{
             background: #eff6ff;
@@ -339,7 +339,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             margin: 12pt 0;
             page-break-inside: avoid;
         }}
-        
+
         .warning-box {{
             background: #fef3c7;
             border-left: 4px solid #f59e0b;
@@ -347,7 +347,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             margin: 12pt 0;
             page-break-inside: avoid;
         }}
-        
+
         /* Footer styling */
         .footer {{
             margin-top: 24pt;
@@ -374,9 +374,9 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
             <p><strong>Data Source:</strong> Celestrak TLE Database</p>
         </div>
     </div>
-    
+
     {html_content}
-    
+
     <div class="footer">
         <p>This report is for analysis purposes. Actual signal performance may vary based on satellite configuration, atmospheric conditions, and ground terminal specifications.</p>
         <p>© 2025 AST SpaceMobile Satellite Analysis Project</p>

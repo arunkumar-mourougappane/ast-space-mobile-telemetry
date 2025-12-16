@@ -32,13 +32,13 @@ def main():
         epilog="""Examples:
   # Use default dates (Dec 7-12, 2025)
   python run_analysis.py
-  
+
   # Custom date range
   python run_analysis.py --start 2025-12-01 --end 2025-12-15
-  
+
   # Generate only pass report from existing data
   python run_analysis.py --skip-data
-  
+
   # Generate only PDF from existing markdown
   python run_analysis.py --skip-data --skip-passes
         """,

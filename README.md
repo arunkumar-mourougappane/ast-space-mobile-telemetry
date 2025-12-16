@@ -8,6 +8,7 @@
 Comprehensive trajectory and signal strength analysis toolkit for AST SpaceMobile satellite constellation. This project generates detailed reports, visualizations, and datasets for satellite passes over any location with configurable date ranges.
 
 **Key Features:**
+
 - 🛰️ Tracks all 6 AST SpaceMobile satellites (BlueWalker 3, BlueBird 1-5)
 - 📅 Configurable date ranges for custom analysis periods
 - 📊 Detailed pass-by-pass analysis with complete position data
@@ -54,7 +55,7 @@ python run_analysis.py --help
 
 ## Project Structure
 
-```
+```text
 ast-space-mobile-telemetry/
 ├── ast_satellite_report.py      # Satellite data generation & TLE fetching
 ├── generate_pass_report.py      # Pass analysis & visualization
@@ -76,6 +77,7 @@ Running the analysis pipeline generates the following files:
 ### 📊 Reports
 
 #### 1. PDF Report (`AST_SpaceMobile_Detailed_Pass_Report.pdf`)
+
 - **Size:** ~34 MB (with 228 embedded graphs)
 - Professional layout with title page and styling
 - All satellite passes with complete position data tables
@@ -84,6 +86,7 @@ Running the analysis pipeline generates the following files:
 - Optimized for printing and distribution
 
 #### 2. Markdown Report (`AST_SpaceMobile_Detailed_Pass_Report.md`)
+
 - **Size:** ~1.3 MB
 - Complete source document
 - Full position data for all passes (every 5-second measurement)
@@ -91,6 +94,7 @@ Running the analysis pipeline generates the following files:
 - Easy to parse and customize
 
 #### 3. Executive Summary (`AST_SpaceMobile_Satellite_Report_*.md`)
+
 - Fleet overview and orbital parameters
 - TLE data for each satellite
 - Aggregate statistics
@@ -99,6 +103,7 @@ Running the analysis pipeline generates the following files:
 ### 📈 Visualizations
 
 **`pass_graphs/` directory** - Signal strength graphs for each pass
+
 - One graph per satellite pass
 - Dual-panel layout:
   - Top: Signal power (dBm) and elevation angle
@@ -109,12 +114,14 @@ Running the analysis pipeline generates the following files:
 ### 📁 Data Files
 
 #### CSV Files (5-second interval data)
+
 - One file per satellite: `ast_[satellite_name]_[daterange].csv`
 - **Columns:** timestamp, elevation, azimuth, range, signal power, SNR, link quality, and more
 - **Records:** ~103,680 per satellite for 6-day analysis
 - **Format:** Standard CSV, easily imported into Excel, Python, R, etc.
 
 #### JSON File
+
 - `ast_satellite_data_[daterange].json`
 - Complete structured dataset with all position data
 - Includes satellite info, TLE data, and position arrays
@@ -190,6 +197,7 @@ See [requirements.txt](requirements.txt) for complete list with versions.
 ### Signal Strength Model
 
 **Calculation Method:**
+
 - **Frequency:** ~2 GHz (AST SpaceMobile cellular bands)
 - **Free Space Path Loss:** FSPL(dB) = 20×log₁₀(distance_km) + 20×log₁₀(frequency_MHz) + 32.45
 - **Atmospheric Attenuation:** Elevation-dependent (2-7 dB)
@@ -199,6 +207,7 @@ See [requirements.txt](requirements.txt) for complete list with versions.
 - **Noise Floor:** -110 dBm
 
 **Link Quality Thresholds:**
+
 - **Excellent:** SNR ≥ 20 dB - Full data throughput
 - **Good:** SNR ≥ 15 dB - High reliability
 - **Fair:** SNR ≥ 10 dB - Acceptable performance
@@ -207,7 +216,7 @@ See [requirements.txt](requirements.txt) for complete list with versions.
 
 ### Orbital Mechanics
 
-- **TLE Data Source:** Celestrak (https://celestrak.org)
+- **TLE Data Source:** Celestrak (<https://celestrak.org>)
 - **Propagator:** SGP4 (Simplified General Perturbations 4)
 - **Library:** Skyfield (Python)
 - **Precision:** Sub-kilometer accuracy for trajectory calculations
@@ -233,6 +242,7 @@ python run_analysis.py
 ```
 
 This will:
+
 - Fetch TLE data for all 6 satellites
 - Calculate trajectories at 5-second intervals
 - Identify and analyze all satellite passes
@@ -240,6 +250,7 @@ This will:
 - Create markdown and PDF reports
 
 **Output:**
+
 - `ast_satellite_data_dec7-12.json` (268 MB)
 - `ast_*_dec7-12.csv` (6 files, 9.8 MB each)
 - `AST_SpaceMobile_Detailed_Pass_Report.md` (1.3 MB)
@@ -332,8 +343,6 @@ MIDLAND_TX = {
 
 Default is 5 seconds. To change, modify the `interval_seconds` parameter in the `generate_satellite_passes()` call.
 
-## Output File Descriptions
-
 ## CSV Data Format
 
 Each CSV file contains the following columns:
@@ -362,6 +371,7 @@ Each CSV file contains the following columns:
 **Problem:** `ModuleNotFoundError` when running scripts
 
 **Solution:** Make sure virtual environment is activated and dependencies are installed:
+
 ```bash
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -374,6 +384,7 @@ pip install -r requirements.txt
 **Problem:** PDF generation fails
 
 **Solution:** Ensure weasyprint dependencies are installed. On Linux:
+
 ```bash
 sudo apt-get install python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
 ```
@@ -385,11 +396,11 @@ sudo apt-get install python3-dev python3-pip python3-setuptools python3-wheel py
 ## Performance Notes
 
 - **Memory Usage:** ~2-3 GB RAM for 6-day analysis
-- **Processing Time:** 
+- **Processing Time:**
   - Satellite data generation: ~2-3 minutes
   - Pass analysis and graphs: ~3-5 minutes
   - PDF generation: ~2-3 minutes
-- **Disk Space:** 
+- **Disk Space:**
   - Complete 6-day analysis: ~350 MB
   - Per day: ~60 MB
 
@@ -424,6 +435,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 
 For questions, issues, or suggestions:
+
 - Open an issue on [GitHub](https://github.com/arunkumar-mourougappane/ast-space-mobile-telemetry/issues)
 - Check existing documentation in generated reports
 

@@ -219,7 +219,7 @@ def generate_satellite_passes(
 def generate_report(start_date=None, end_date=None):
     """
     Main function to generate the comprehensive satellite report
-    
+
     Args:
         start_date: Start date for analysis (datetime object). Defaults to Dec 7, 2025
         end_date: End date for analysis (datetime object). Defaults to Dec 12, 2025
@@ -229,7 +229,7 @@ def generate_report(start_date=None, end_date=None):
         start_date = datetime(2025, 12, 7, 0, 0, 0)
     if end_date is None:
         end_date = datetime(2025, 12, 12, 23, 59, 59)
-    
+
     print("=" * 80)
     print("AST SPACEMOBILE SATELLITE TRAJECTORY AND SIGNAL STRENGTH REPORT")
     print("=" * 80)
@@ -237,7 +237,9 @@ def generate_report(start_date=None, end_date=None):
         f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, {abs(MIDLAND_TX['longitude'])}°W)"
     )
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
-    print(f"Date Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}")
+    print(
+        f"Date Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}"
+    )
     print("Measurement Interval: 5 seconds")
     print("=" * 80)
     print()
@@ -348,8 +350,10 @@ def generate_report(start_date=None, end_date=None):
         report_sections.append(section)
 
     # Generate filename suffix with date range
-    date_suffix = f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
-    
+    date_suffix = (
+        f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
+    )
+
     # Save data to JSON
     json_filename = f"ast_satellite_data_{date_suffix}.json"
     with open(json_filename, "w") as f:
@@ -365,7 +369,7 @@ def generate_report(start_date=None, end_date=None):
 
     # Calculate analysis duration
     duration_days = (end_date - start_date).days + 1
-    
+
     # Generate Markdown report
     report_content = f"""# AST SpaceMobile Satellite Report
 ## Trajectory and Signal Strength Analysis
@@ -492,41 +496,45 @@ if __name__ == "__main__":
         epilog="""Examples:
   # Use default dates (Dec 7-12, 2025)
   python ast_satellite_report.py
-  
+
   # Custom date range
   python ast_satellite_report.py --start 2025-12-01 --end 2025-12-15
-  
+
   # Single day analysis
   python ast_satellite_report.py --start 2025-12-10 --end 2025-12-10
-        """
+        """,
     )
-    
+
     parser.add_argument(
         "--start",
         type=str,
         default="2025-12-07",
-        help="Start date in YYYY-MM-DD format (default: 2025-12-07)"
+        help="Start date in YYYY-MM-DD format (default: 2025-12-07)",
     )
-    
+
     parser.add_argument(
         "--end",
         type=str,
         default="2025-12-12",
-        help="End date in YYYY-MM-DD format (default: 2025-12-12)"
+        help="End date in YYYY-MM-DD format (default: 2025-12-12)",
     )
-    
+
     args = parser.parse_args()
-    
+
     try:
         # Parse dates
-        start_date = datetime.strptime(args.start, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
-        end_date = datetime.strptime(args.end, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
-        
+        start_date = datetime.strptime(args.start, "%Y-%m-%d").replace(
+            hour=0, minute=0, second=0
+        )
+        end_date = datetime.strptime(args.end, "%Y-%m-%d").replace(
+            hour=23, minute=59, second=59
+        )
+
         # Validate dates
         if end_date < start_date:
             print("❌ Error: End date must be after start date")
             exit(1)
-        
+
         # Generate report with custom dates
         data, report_file = generate_report(start_date, end_date)
         print("\n✓ All files generated successfully!")
@@ -539,5 +547,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Error generating report: {e}")
         import traceback
+
         traceback.print_exc()
         exit(1)

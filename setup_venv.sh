@@ -81,6 +81,7 @@ fi
 # Activate virtual environment
 echo ""
 echo -e "${YELLOW}► Activating virtual environment...${NC}"
+# shellcheck disable=SC1091
 source "$VENV_DIR/bin/activate"
 echo -e "${GREEN}✓ Virtual environment activated${NC}"
 
@@ -147,6 +148,7 @@ for module, name in packages.items():
 sys.exit(0 if all_ok else 1)
 EOF
 
+# shellcheck disable=SC2181
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ All packages verified${NC}"
 else
