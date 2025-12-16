@@ -45,7 +45,9 @@ def print_success_summary(args, start_date, end_date):
     print("\nGenerated files:")
 
     if not args.skip_data:
-        date_suffix = f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
+        date_suffix = (
+            f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
+        )
         print(f"  📊 Data: ast_satellite_data_{date_suffix}.json")
         print(f"  📊 CSV files: ast_*_{date_suffix}.csv")
 
