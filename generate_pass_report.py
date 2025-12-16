@@ -392,7 +392,9 @@ A pass is defined as a continuous period where the satellite is above the local 
 ---
 
 *This report is for analysis purposes. Actual signal performance may vary based on satellite configuration, atmospheric conditions, and ground terminal specifications.*
-""".format(generated_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC"))
+""".format(
+    generated_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+)
 
 # Save the report
 output_filename = "AST_SpaceMobile_Detailed_Pass_Report.md"
