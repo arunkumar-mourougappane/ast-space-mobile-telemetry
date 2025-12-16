@@ -12,6 +12,7 @@ import json
 import requests
 from typing import List, Dict, Tuple
 import pandas as pd
+import argparse
 
 # AST SpaceMobile satellites
 # Based on publicly available information, AST SpaceMobile has launched:
@@ -215,10 +216,20 @@ def generate_satellite_passes(
     return positions
 
 
-def generate_report():
+def generate_report(start_date=None, end_date=None):
     """
     Main function to generate the comprehensive satellite report
+    
+    Args:
+        start_date: Start date for analysis (datetime object). Defaults to Dec 7, 2025
+        end_date: End date for analysis (datetime object). Defaults to Dec 12, 2025
     """
+    # Set default dates if not provided
+    if start_date is None:
+        start_date = datetime(2025, 12, 7, 0, 0, 0)
+    if end_date is None:
+        end_date = datetime(2025, 12, 12, 23, 59, 59)
+    
     print("=" * 80)
     print("AST SPACEMOBILE SATELLITE TRAJECTORY AND SIGNAL STRENGTH REPORT")
     print("=" * 80)
@@ -226,7 +237,7 @@ def generate_report():
         f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, {abs(MIDLAND_TX['longitude'])}°W)"
     )
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
-    print("Date Range: December 7, 2025 - December 12, 2025")
+    print(f"Date Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}")
     print("Measurement Interval: 5 seconds")
     print("=" * 80)
     print()
@@ -238,10 +249,6 @@ def generate_report():
     observer = wgs84.latlon(
         MIDLAND_TX["latitude"], MIDLAND_TX["longitude"], MIDLAND_TX["elevation_m"]
     )
-
-    # Date range
-    start_date = datetime(2025, 12, 7, 0, 0, 0)
-    end_date = datetime(2025, 12, 12, 23, 59, 59)
 
     all_satellite_data = {}
     report_sections = []
@@ -340,29 +347,35 @@ def generate_report():
 """
         report_sections.append(section)
 
+    # Generate filename suffix with date range
+    date_suffix = f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
+    
     # Save data to JSON
-    json_filename = "ast_satellite_data_dec7-12.json"
+    json_filename = f"ast_satellite_data_{date_suffix}.json"
     with open(json_filename, "w") as f:
         json.dump(all_satellite_data, f, indent=2)
     print(f"\n✓ Detailed data saved to: {json_filename}")
 
     # Create CSV for each satellite
     for sat_name, data in all_satellite_data.items():
-        csv_filename = f"ast_{sat_name.lower().replace(' ', '_')}_dec7-12.csv"
+        csv_filename = f"ast_{sat_name.lower().replace(' ', '_')}_{date_suffix}.csv"
         df = pd.DataFrame(data["positions"])
         df.to_csv(csv_filename, index=False)
         print(f"✓ CSV data saved to: {csv_filename}")
 
+    # Calculate analysis duration
+    duration_days = (end_date - start_date).days + 1
+    
     # Generate Markdown report
     report_content = f"""# AST SpaceMobile Satellite Report
 ## Trajectory and Signal Strength Analysis
-### Midland, TX - December 7-12, 2025
+### Midland, TX - {start_date.strftime('%B %d')}-{end_date.strftime('%d, %Y')}
 
 ---
 
 ## Executive Summary
 
-This report provides comprehensive trajectory and signal strength analysis for all AST SpaceMobile satellites over Midland, Texas during the period of December 7-12, 2025.
+This report provides comprehensive trajectory and signal strength analysis for all AST SpaceMobile satellites over Midland, Texas during the period of {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}.
 
 **Location Details:**
 - **Latitude:** {MIDLAND_TX['latitude']}°N
@@ -370,9 +383,9 @@ This report provides comprehensive trajectory and signal strength analysis for a
 - **Elevation:** {MIDLAND_TX['elevation_m']} meters
 
 **Analysis Parameters:**
-- **Date Range:** December 7, 2025 00:00:00 UTC - December 12, 2025 23:59:59 UTC
+- **Date Range:** {start_date.strftime('%B %d, %Y %H:%M:%S UTC')} - {end_date.strftime('%B %d, %Y %H:%M:%S UTC')}
 - **Measurement Interval:** 5 seconds
-- **Total Analysis Duration:** 6 days
+- **Total Analysis Duration:** {duration_days} days
 - **Satellites Analyzed:** {len(AST_SATELLITES)}
 
 **AST SpaceMobile Fleet:**
@@ -460,7 +473,7 @@ The following data files have been generated:
 *For questions or additional analysis, please contact the satellite operations team.*
 """
 
-    report_filename = "AST_SpaceMobile_Satellite_Report_Dec7-12-2025.md"
+    report_filename = f"AST_SpaceMobile_Satellite_Report_{start_date.strftime('%b%d')}-{end_date.strftime('%b%d-%Y')}.md"
     with open(report_filename, "w") as f:
         f.write(report_content)
 
@@ -473,13 +486,58 @@ The following data files have been generated:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Generate AST SpaceMobile satellite trajectory and signal strength report",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""Examples:
+  # Use default dates (Dec 7-12, 2025)
+  python ast_satellite_report.py
+  
+  # Custom date range
+  python ast_satellite_report.py --start 2025-12-01 --end 2025-12-15
+  
+  # Single day analysis
+  python ast_satellite_report.py --start 2025-12-10 --end 2025-12-10
+        """
+    )
+    
+    parser.add_argument(
+        "--start",
+        type=str,
+        default="2025-12-07",
+        help="Start date in YYYY-MM-DD format (default: 2025-12-07)"
+    )
+    
+    parser.add_argument(
+        "--end",
+        type=str,
+        default="2025-12-12",
+        help="End date in YYYY-MM-DD format (default: 2025-12-12)"
+    )
+    
+    args = parser.parse_args()
+    
     try:
-        data, report_file = generate_report()
+        # Parse dates
+        start_date = datetime.strptime(args.start, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+        end_date = datetime.strptime(args.end, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+        
+        # Validate dates
+        if end_date < start_date:
+            print("❌ Error: End date must be after start date")
+            exit(1)
+        
+        # Generate report with custom dates
+        data, report_file = generate_report(start_date, end_date)
         print("\n✓ All files generated successfully!")
         print(f"\n📊 Main Report: {report_file}")
         print("📁 Data files created in current directory")
+    except ValueError as e:
+        print(f"\n❌ Error parsing dates: {e}")
+        print("Please use YYYY-MM-DD format for dates")
+        exit(1)
     except Exception as e:
         print(f"\n❌ Error generating report: {e}")
         import traceback
-
         traceback.print_exc()
+        exit(1)
