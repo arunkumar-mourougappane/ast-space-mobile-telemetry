@@ -486,7 +486,7 @@ def generate_pdf_weasyprint(md_file, output_pdf):
         print(f"  ✓ HTML version saved to: {html_file}")
 
         # Generate PDF with bookmarks
-        print(f"  Generating PDF (this may take a few minutes with 228 images)...")
+        print("  Generating PDF (this may take a few minutes with 228 images)...")
 
         # Create HTML document
         html_doc = HTML(string=html_content, base_url=base_path)
@@ -495,9 +495,9 @@ def generate_pdf_weasyprint(md_file, output_pdf):
         print("  Rendering PDF document...")
         html_doc.write_pdf(output_pdf, stylesheets=None, presentational_hints=True)
 
-        print(f"  ✓ PDF generated successfully")
+        print("  ✓ PDF generated successfully")
         print(
-            f"  ℹ Note: PDF includes HTML anchors for navigation. Bookmarks visible in advanced PDF readers."
+            "  ℹ Note: PDF includes HTML anchors for navigation. Bookmarks visible in advanced PDF readers."
         )
         return True
 
@@ -520,22 +520,13 @@ def generate_pdf_reportlab(md_file, output_pdf):
         from reportlab.lib.pagesizes import letter
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
-        from reportlab.platypus import (
-            SimpleDocTemplate,
-            Paragraph,
-            Spacer,
-            Image,
-            PageBreak,
-            Table,
-            TableStyle,
-        )
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
         from reportlab.lib import colors
-        from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
+        from reportlab.lib.enums import TA_CENTER
 
         print("Using ReportLab for PDF generation...")
 
         # Read markdown file
-        base_path = os.path.dirname(os.path.abspath(md_file))
         with open(md_file, "r", encoding="utf-8") as f:
             md_content = f.read()
 

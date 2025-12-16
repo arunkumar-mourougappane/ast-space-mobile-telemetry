@@ -226,8 +226,8 @@ def generate_report():
         f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, {abs(MIDLAND_TX['longitude'])}°W)"
     )
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
-    print(f"Date Range: December 7, 2025 - December 12, 2025")
-    print(f"Measurement Interval: 5 seconds")
+    print("Date Range: December 7, 2025 - December 12, 2025")
+    print("Measurement Interval: 5 seconds")
     print("=" * 80)
     print()
 
@@ -258,7 +258,7 @@ def generate_report():
 
         if not line1 or not line2:
             print(f"  ⚠ WARNING: Could not fetch TLE data for {sat_name}")
-            print(f"  Using simulated data for demonstration purposes")
+            print("  Using simulated data for demonstration purposes")
 
             # Create simulated TLE for demonstration
             # This is a placeholder - in production, actual TLE data should be used
@@ -272,7 +272,7 @@ def generate_report():
         satellite = EarthSatellite(line1, line2, name, ts)
 
         # Generate trajectory data
-        print(f"  Calculating trajectories...")
+        print("  Calculating trajectories...")
         positions = generate_satellite_passes(
             satellite, observer, start_date, end_date, interval_seconds=5
         )
@@ -285,7 +285,6 @@ def generate_report():
 
         # Calculate statistics
         visible_positions = [p for p in positions if p["visible"]]
-        max_elevation = max([p["elevation_deg"] for p in positions])
 
         if visible_positions:
             avg_elevation_visible = np.mean(
@@ -321,7 +320,7 @@ def generate_report():
         # Create report section
         section = f"""
 ## {sat_name}
-**NORAD ID:** {sat_info['norad_id']}  
+**NORAD ID:** {sat_info['norad_id']}
 **Description:** {sat_info['description']}
 
 ### Orbital Parameters (TLE)
@@ -367,7 +366,7 @@ This report provides comprehensive trajectory and signal strength analysis for a
 
 **Location Details:**
 - **Latitude:** {MIDLAND_TX['latitude']}°N
-- **Longitude:** {abs(MIDLAND_TX['longitude'])}°W  
+- **Longitude:** {abs(MIDLAND_TX['longitude'])}°W
 - **Elevation:** {MIDLAND_TX['elevation_m']} meters
 
 **Analysis Parameters:**
@@ -397,7 +396,7 @@ Signal strength is estimated using:
 
 **Link Quality Metrics:**
 - **Excellent:** SNR ≥ 20 dB
-- **Good:** SNR ≥ 15 dB  
+- **Good:** SNR ≥ 15 dB
 - **Fair:** SNR ≥ 10 dB
 - **Poor:** SNR ≥ 5 dB
 - **Very Poor:** SNR < 5 dB
@@ -452,8 +451,8 @@ The following data files have been generated:
 ---
 
 ## Report Generated
-**Date:** {datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")}  
-**Software:** AST SpaceMobile Satellite Analysis Tool v1.0  
+**Date:** {datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")}
+**Software:** AST SpaceMobile Satellite Analysis Tool v1.0
 **Data Sources:** Celestrak (TLE data), Skyfield (orbital mechanics)
 
 ---
@@ -476,9 +475,9 @@ The following data files have been generated:
 if __name__ == "__main__":
     try:
         data, report_file = generate_report()
-        print(f"\n✓ All files generated successfully!")
+        print("\n✓ All files generated successfully!")
         print(f"\n📊 Main Report: {report_file}")
-        print(f"📁 Data files created in current directory")
+        print("📁 Data files created in current directory")
     except Exception as e:
         print(f"\n❌ Error generating report: {e}")
         import traceback

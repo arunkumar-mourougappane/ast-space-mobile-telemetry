@@ -107,7 +107,7 @@ def create_signal_strength_graph(satellite_name, pass_num, pass_data, output_fil
 
     # Combine legends
     lines = line1 + line2
-    labels = [l.get_label() for l in lines]
+    labels = [line.get_label() for line in lines]
     ax1.legend(lines, labels, loc="upper left", fontsize=9)
 
     # Plot 2: SNR
@@ -193,7 +193,7 @@ def generate_detailed_pass_section(satellite_name, passes):
     md += "\n"
 
     # Individual pass details with graphs
-    md += f"\n### Detailed Pass Analysis\n\n"
+    md += "\n### Detailed Pass Analysis\n\n"
 
     for i, pass_data in enumerate(passes, 1):
         start_time = utc_to_cst(pass_data[0]["timestamp"])
@@ -294,8 +294,8 @@ This comprehensive report provides detailed analysis of every satellite pass for
 - **Elevation profile** during each pass
 - **Detailed metrics** including duration, peak signal, and link quality
 
-**Location:** Midland, TX (31.9973°N, 102.0779°W, elevation 872m)  
-**Time Zone:** CST (Central Standard Time, UTC-6)  
+**Location:** Midland, TX (31.9973°N, 102.0779°W, elevation 872m)
+**Time Zone:** CST (Central Standard Time, UTC-6)
 **Analysis Period:** December 7, 2025 00:00 UTC to December 12, 2025 23:59 UTC
 
 ---
@@ -343,7 +343,7 @@ for sat_name in satellite_data.keys():
     report_md += generate_detailed_pass_section(sat_name, passes)
 
 # Add summary section at the beginning
-summary_section = f"\n### Overall Statistics\n\n"
+summary_section = "\n### Overall Statistics\n\n"
 summary_section += f"**Total Passes Across All Satellites:** {total_passes}\n\n"
 summary_section += "| Satellite | Number of Passes |\n"
 summary_section += "|-----------|------------------|\n"
@@ -357,8 +357,7 @@ report_md = report_md.replace(
 )
 
 # Add footer
-report_md += (
-    """
+report_md += """
 ---
 
 ## Appendix: Methodology
@@ -385,31 +384,28 @@ A pass is defined as a continuous period where the satellite is above the local 
 
 ## Report Metadata
 
-**Generated:** """
-    + datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
-    + """  
-**Analysis Tool:** AST SpaceMobile Pass Analysis v1.0  
-**Data Source:** Celestrak TLE data with SGP4 propagation  
+**Generated:** {generated_time}
+**Analysis Tool:** AST SpaceMobile Pass Analysis v1.0
+**Data Source:** Celestrak TLE data with SGP4 propagation
 **Visualization:** Matplotlib with 5-second sampling intervals
 
 ---
 
 *This report is for analysis purposes. Actual signal performance may vary based on satellite configuration, atmospheric conditions, and ground terminal specifications.*
-"""
-)
+""".format(generated_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC"))
 
 # Save the report
 output_filename = "AST_SpaceMobile_Detailed_Pass_Report.md"
 with open(output_filename, "w") as f:
     f.write(report_md)
 
-print(f"\n{'='*80}")
-print(f"REPORT GENERATION COMPLETE")
-print(f"{'='*80}")
-print(f"\n✓ Generated {total_passes} pass graphs")
+print("\\n" + "=" * 80)
+print("REPORT GENERATION COMPLETE")
+print("=" * 80)
+print(f"\\n✓ Generated {total_passes} pass graphs")
 print(f"✓ Report saved to: {output_filename}")
-print(f"✓ Graphs saved to: pass_graphs/ directory")
-print(f"\nPass breakdown by satellite:")
+print("✓ Graphs saved to: pass_graphs/ directory")
+print("\\nPass breakdown by satellite:")
 for sat_name, count in satellite_pass_counts.items():
     print(f"  - {sat_name}: {count} passes")
-print(f"\n{'='*80}")
+print("\\n" + "=" * 80)
