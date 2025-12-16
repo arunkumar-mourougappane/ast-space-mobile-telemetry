@@ -590,7 +590,7 @@ def generate_pdf_pandoc(md_file, output_pdf):
 
     try:
         # Check if pandoc is available
-        result = subprocess.run(["pandoc", "--version"], capture_output=True, text=True)  # nosec B607,B603 - Safe pandoc call
+        result = subprocess.run(["pandoc", "--version"], capture_output=True, text=True)  # nosec
 
         if result.returncode != 0:
             print("Pandoc not available")

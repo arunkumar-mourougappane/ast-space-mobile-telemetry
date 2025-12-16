@@ -60,10 +60,11 @@ def run_command(cmd, description=None, check=True):
         # Split command string into list for security
         if isinstance(cmd, str):
             import shlex
+
             cmd_list = shlex.split(cmd)
         else:
             cmd_list = cmd
-        
+
         result = subprocess.run(  # nosec B603 - Controlled command execution
             cmd_list,
             shell=False,
@@ -209,7 +210,7 @@ for module, name in packages.items():
 sys.exit(0 if all_ok else 1)
 """
 
-    result = subprocess.run([str(python_path), "-c", verification_script], capture_output=True, text=True)  # nosec B603 - Controlled Python execution
+    result = subprocess.run([str(python_path), "-c", verification_script], capture_output=True, text=True)  # nosec
 
     print(result.stdout)
 
@@ -259,7 +260,7 @@ echo ""
     activate_script.write_text(content)
 
     if platform.system() != "Windows":
-            os.chmod(activate_script, 0o755)  # nosec B103 - Script needs execute permissions
+        os.chmod(activate_script, 0o755)  # nosec B103 - Script needs execute permissions
     print_success(f"Activation helper created: {activate_script.name}")
 
 
