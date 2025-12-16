@@ -14,7 +14,7 @@ Created: December 15, 2025
 
 import os
 import platform
-import subprocess
+import subprocess  # nosec B404 - Required for environment setup
 import sys
 from pathlib import Path
 
@@ -57,9 +57,16 @@ def run_command(cmd, description=None, check=True):
         print(f"  {description}...")
 
     try:
-        result = subprocess.run(
-            cmd,
-            shell=True,
+        # Split command string into list for security
+        if isinstance(cmd, str):
+            import shlex
+            cmd_list = shlex.split(cmd)
+        else:
+            cmd_list = cmd
+        
+        result = subprocess.run(  # nosec B603 - Controlled command execution
+            cmd_list,
+            shell=False,
             check=check,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -89,7 +96,7 @@ def create_venv(venv_path):
     """Create virtual environment"""
     if venv_path.exists():
         print(f"\n{Colors.YELLOW}⚠ Virtual environment already exists at: {venv_path}{Colors.NC}")
-        response = input("Remove and create fresh? (y/N): ").strip().lower()
+        response = input("Remove and create fresh? (y/N): ").strip().lower()  # nosec B322 - Safe in Python 3
 
         if response == "y":
             print_step("Removing existing virtual environment...")
@@ -202,7 +209,7 @@ for module, name in packages.items():
 sys.exit(0 if all_ok else 1)
 """
 
-    result = subprocess.run([str(python_path), "-c", verification_script], capture_output=True, text=True)
+    result = subprocess.run([str(python_path), "-c", verification_script], capture_output=True, text=True)  # nosec B603 - Controlled Python execution
 
     print(result.stdout)
 
@@ -252,8 +259,7 @@ echo ""
     activate_script.write_text(content)
 
     if platform.system() != "Windows":
-        os.chmod(activate_script, 0o755)
-
+            os.chmod(activate_script, 0o755)  # nosec B103 - Script needs execute permissions
     print_success(f"Activation helper created: {activate_script.name}")
 
 

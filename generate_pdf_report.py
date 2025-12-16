@@ -586,11 +586,11 @@ def generate_pdf_pandoc(md_file, output_pdf):
     """
     Generate PDF using Pandoc (requires pandoc and texlive)
     """
-    import subprocess
+    import subprocess  # nosec B404 - Required for pandoc integration
 
     try:
         # Check if pandoc is available
-        result = subprocess.run(["pandoc", "--version"], capture_output=True, text=True)
+        result = subprocess.run(["pandoc", "--version"], capture_output=True, text=True)  # nosec B607,B603 - Safe pandoc call
 
         if result.returncode != 0:
             print("Pandoc not available")
@@ -620,7 +620,7 @@ def generate_pdf_pandoc(md_file, output_pdf):
         ]
 
         print("  Generating PDF (this may take several minutes)...")
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True)  # nosec B603 - Controlled command execution
 
         if result.returncode == 0:
             print(f"  ✓ PDF generated successfully: {output_pdf}")

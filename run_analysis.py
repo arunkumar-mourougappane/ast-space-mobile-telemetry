@@ -5,7 +5,7 @@ Runs the full analysis pipeline with configurable date ranges
 """
 
 import argparse
-import subprocess
+import subprocess  # nosec B404 - Needed for running analysis pipeline
 import sys
 from datetime import datetime
 
@@ -16,7 +16,7 @@ def run_command(cmd, description):
     print(f"{description}")
     print(f"{'='*80}\n")
 
-    result = subprocess.run(cmd, shell=False)
+    result = subprocess.run(cmd, shell=False)  # nosec B603 - Controlled command execution
 
     if result.returncode != 0:
         print(f"\n❌ Error: {description} failed with exit code {result.returncode}")
