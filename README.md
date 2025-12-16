@@ -1,6 +1,7 @@
 # AST SpaceMobile Analysis - Project Summary
 
 ## Overview
+
 This project contains comprehensive trajectory and signal strength analysis for all AST SpaceMobile satellites over Midland, TX from December 7-12, 2025.
 
 ## Generated Reports and Data Files
@@ -8,6 +9,7 @@ This project contains comprehensive trajectory and signal strength analysis for 
 ### 📊 Main Reports
 
 1. **[AST_SpaceMobile_Detailed_Pass_Report.pdf](AST_SpaceMobile_Detailed_Pass_Report.pdf)** 🎯 **PROFESSIONAL PDF REPORT**
+
    - 30.1 MB stylized PDF with embedded images
    - Professional layout with title page, headers, and page numbers
    - All 228 satellite pass graphs embedded at full quality
@@ -16,6 +18,7 @@ This project contains comprehensive trajectory and signal strength analysis for 
    - **Bonus:** [HTML version](AST_SpaceMobile_Detailed_Pass_Report.html) for web viewing
 
 2. **[AST_SpaceMobile_Detailed_Pass_Report.md](AST_SpaceMobile_Detailed_Pass_Report.md)** ⭐ **SOURCE MARKDOWN**
+
    - 7,367 lines of detailed analysis
    - 228 individual satellite passes analyzed
    - Complete pass tables with local (CST) timestamps
@@ -33,6 +36,7 @@ This project contains comprehensive trajectory and signal strength analysis for 
 ### 📈 Visualizations
 
 **[pass_graphs/](pass_graphs/)** directory contains 228 signal strength graphs
+
 - One graph per satellite pass
 - Each graph shows:
   - Signal power (dBm) vs time
@@ -44,6 +48,7 @@ This project contains comprehensive trajectory and signal strength analysis for 
 ### 📁 Data Files
 
 **CSV Files (5-second interval data):**
+
 - [ast_bluewalker_3_dec7-12.csv](ast_bluewalker_3_dec7-12.csv) - 103,681 records
 - [ast_bluebird-1_dec7-12.csv](ast_bluebird-1_dec7-12.csv) - 103,681 records
 - [ast_bluebird-2_dec7-12.csv](ast_bluebird-2_dec7-12.csv) - 103,681 records
@@ -53,23 +58,25 @@ This project contains comprehensive trajectory and signal strength analysis for 
 - **Total:** 622,086 records across all satellites
 
 **JSON Data:**
+
 - [ast_satellite_data_dec7-12.json](ast_satellite_data_dec7-12.json) - Complete structured dataset
 
 ## Satellites Analyzed
 
-| Satellite | NORAD ID | Passes | Description |
-|-----------|----------|--------|-------------|
-| **BLUEWALKER 3** | 53807 | 45 | Test satellite, largest commercial LEO communications array |
-| **BLUEBIRD-1** | 60399 | 36 | First commercial Block 1 BlueBird satellite |
-| **BLUEBIRD-2** | 60400 | 37 | Second commercial Block 1 BlueBird satellite |
-| **BLUEBIRD-3** | 60401 | 37 | Third commercial Block 1 BlueBird satellite |
-| **BLUEBIRD-4** | 60402 | 37 | Fourth commercial Block 1 BlueBird satellite |
-| **BLUEBIRD-5** | 60403 | 36 | Fifth commercial Block 1 BlueBird satellite |
-| **TOTAL** | - | **228** | - |
+| Satellite        | NORAD ID | Passes  | Description                                                 |
+| ---------------- | -------- | ------- | ----------------------------------------------------------- |
+| **BLUEWALKER 3** | 53807    | 45      | Test satellite, largest commercial LEO communications array |
+| **BLUEBIRD-1**   | 60399    | 36      | First commercial Block 1 BlueBird satellite                 |
+| **BLUEBIRD-2**   | 60400    | 37      | Second commercial Block 1 BlueBird satellite                |
+| **BLUEBIRD-3**   | 60401    | 37      | Third commercial Block 1 BlueBird satellite                 |
+| **BLUEBIRD-4**   | 60402    | 37      | Fourth commercial Block 1 BlueBird satellite                |
+| **BLUEBIRD-5**   | 60403    | 36      | Fifth commercial Block 1 BlueBird satellite                 |
+| **TOTAL**        | -        | **228** | -                                                           |
 
 ## Key Statistics
 
 ### Analysis Parameters
+
 - **Location:** Midland, TX (31.9973°N, 102.0779°W, elevation 872m)
 - **Date Range:** December 7-12, 2025 (6 days)
 - **Measurement Interval:** 5 seconds
@@ -78,6 +85,7 @@ This project contains comprehensive trajectory and signal strength analysis for 
 - **Total Passes:** 228 individual satellite passes
 
 ### Signal Performance Summary
+
 - **Peak Signal Strength:** -54 to -57 dBm (closest approaches)
 - **Average Visible Signal:** -66 to -70 dBm
 - **Maximum Elevations:** 73-87° (excellent overhead passes)
@@ -89,7 +97,9 @@ This project contains comprehensive trajectory and signal strength analysis for 
 The [AST_SpaceMobile_Detailed_Pass_Report.md](AST_SpaceMobile_Detailed_Pass_Report.md) contains:
 
 ### For Each Satellite:
+
 1. **Pass Summary Table** - Overview of all passes with:
+
    - Start/End times in local CST
    - Duration (mm:ss)
    - Maximum elevation
@@ -109,6 +119,7 @@ The [AST_SpaceMobile_Detailed_Pass_Report.md](AST_SpaceMobile_Detailed_Pass_Repo
 ## CSV Data Columns
 
 Each CSV file contains the following columns:
+
 - `timestamp` - ISO 8601 UTC timestamp
 - `unix_timestamp` - Unix epoch time
 - `elevation_deg` - Satellite elevation angle (degrees)
@@ -127,11 +138,13 @@ Each CSV file contains the following columns:
 ## Technical Methodology
 
 ### Orbital Calculations
+
 - **TLE Data:** Current Two-Line Element sets from Celestrak
 - **Propagator:** SGP4 orbital mechanics model via Skyfield library
 - **Precision:** Sub-kilometer accuracy for trajectory calculations
 
 ### Signal Strength Model
+
 - **Frequency:** ~2 GHz (cellular bands)
 - **Satellite EIRP:** 55 dBW (assumed)
 - **Ground Station Gain:** 15 dBi
@@ -139,6 +152,7 @@ Each CSV file contains the following columns:
 - **Noise Floor:** -110 dBm
 
 ### Link Quality Thresholds
+
 - **Excellent:** SNR ≥ 20 dB
 - **Good:** SNR ≥ 15 dB
 - **Fair:** SNR ≥ 10 dB
@@ -154,25 +168,32 @@ Each CSV file contains the following columns:
 ## Usage Examples
 
 ### View a Specific Pass
+
 To analyze a specific pass, open the detailed report and navigate to the satellite section. For example, BLUEWALKER 3 Pass #16 on 12/09 shows:
+
 - 11:20 minute duration
 - Maximum elevation: 51.7°
 - Peak signal: -58.6 dBm
 - Peak SNR: 51.4 dB (Excellent quality)
 
 ### Extract Pass Data
+
 To get raw data for a specific pass, use the CSV files and filter by timestamp. For example, BLUEBIRD-1's first pass on 12/06 at 19:19-19:30 CST can be extracted from the CSV.
 
 ### Compare Satellites
+
 Use the pass summary tables to compare performance across satellites. All satellites show similar signal characteristics when at comparable elevations.
 
 ## Time Zone Note
-⚠️ **Important:** 
+
+⚠️ **Important:**
+
 - All timestamps in CSV and JSON files are in **UTC**
 - All timestamps in the detailed pass report are in **CST (UTC-6)**
 - Midland, TX is in Central Standard Time during December
 
 ## Report Generation
+
 - **Generated:** December 15, 2025
 - **Software:** AST SpaceMobile Satellite Analysis Tool v1.0
 - **Python Libraries:** Skyfield, NumPy, Pandas, Matplotlib, Requests
@@ -180,18 +201,23 @@ Use the pass summary tables to compare performance across satellites. All satell
 ## Quick Navigation
 
 ### Want to see all passes at a glance?
+
 → Open [AST_SpaceMobile_Detailed_Pass_Report.md](AST_SpaceMobile_Detailed_Pass_Report.md) and scroll to any satellite's "Pass Summary" table
 
 ### Want detailed analysis of a specific pass?
+
 → Find the pass in the summary table, then scroll down to the "Detailed Pass Analysis" section
 
 ### Want to analyze raw data?
+
 → Use the CSV files with your preferred data analysis tool (Excel, Python, R, etc.)
 
 ### Want to see orbital parameters?
+
 → Check [AST_SpaceMobile_Satellite_Report_Dec7-12-2025.md](AST_SpaceMobile_Satellite_Report_Dec7-12-2025.md) for TLE data
 
 ### Want to see signal graphs?
+
 → All graphs are embedded in the detailed report and saved in [pass_graphs/](pass_graphs/)
 
 ---

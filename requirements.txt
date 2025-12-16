@@ -1,0 +1,25 @@
+# AST SpaceMobile Telemetry - Python Dependencies
+# ==============================================
+# Requirements for satellite tracking and reporting tools
+# 
+# Installation:
+#   pip install -r requirements.txt
+#
+# Created: December 15, 2025
+
+# Core scientific computing
+numpy>=1.24.0
+pandas>=2.0.0
+
+# HTTP requests
+requests>=2.31.0
+
+# Orbital mechanics and satellite tracking
+skyfield>=1.46
+
+# Data visualization
+matplotlib>=3.7.0
+
+# Document generation
+markdown>=3.5.0
+weasyprint>=60.0
