@@ -521,9 +521,9 @@ def generate_pdf_reportlab(md_file, output_pdf):
         from reportlab.lib import colors
         from reportlab.lib.enums import TA_CENTER
         from reportlab.lib.pagesizes import letter
-        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
         from reportlab.lib.units import inch
-        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+        from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer
 
         print("Using ReportLab for PDF generation...")
 

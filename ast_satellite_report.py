@@ -235,11 +235,13 @@ def generate_report(start_date=None, end_date=None):
     print("AST SPACEMOBILE SATELLITE TRAJECTORY AND SIGNAL STRENGTH REPORT")
     print("=" * 80)
     print(
-        f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, {abs(MIDLAND_TX['longitude'])}°W)"
+        f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, "
+        f"{abs(MIDLAND_TX['longitude'])}°W)"
     )
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
     print(
-        f"Date Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}"
+        f"Date Range: {start_date.strftime('%B %d, %Y')} - "
+        f"{end_date.strftime('%B %d, %Y')}"
     )
     print("Measurement Interval: 5 seconds")
     print("=" * 80)
@@ -272,8 +274,14 @@ def generate_report(start_date=None, end_date=None):
 
             # Create simulated TLE for demonstration
             # This is a placeholder - in production, actual TLE data should be used
-            line1 = f"1 {sat_info['norad_id']:5d}U 22059A   25341.50000000  .00000000  00000-0  00000-0 0  9999"
-            line2 = f"2 {sat_info['norad_id']:5d}  53.0000  95.0000 0001000  90.0000 270.0000 15.00000000000000"
+            line1 = (
+                f"1 {sat_info['norad_id']:5d}U 22059A   25341.50000000  "
+                f".00000000  00000-0  00000-0 0  9999"
+            )
+            line2 = (
+                f"2 {sat_info['norad_id']:5d}  53.0000  95.0000 0001000  "
+                f"90.0000 270.0000 15.00000000000000"
+            )
             name = sat_name
 
         print(f"  TLE Data Retrieved: {name}")
@@ -343,9 +351,16 @@ def generate_report(start_date=None, end_date=None):
 ### Statistics (Dec 7-12, 2025)
 - **Total Data Points:** {len(positions):,}
 - **Total Visible Time:** {total_visible_time:.1f} minutes
-- **Maximum Elevation:** {max_elevation_visible:.2f}° {"(above horizon)" if max_elevation_visible and max_elevation_visible > 0 else "(below horizon)"}
-- **Average Elevation (when visible):** {f"{avg_elevation_visible:.2f}°" if avg_elevation_visible else "N/A"}
-- **Average Signal Power (when visible):** {f"{avg_signal_power:.2f} dBm" if avg_signal_power else "N/A"}
+- **Maximum Elevation:** {max_elevation_visible:.2f}° {
+    "(above horizon)" if max_elevation_visible and max_elevation_visible > 0
+    else "(below horizon)"
+}
+- **Average Elevation (when visible):** {
+    f"{avg_elevation_visible:.2f}°" if avg_elevation_visible else "N/A"
+}
+- **Average Signal Power (when visible):** {
+    f"{avg_signal_power:.2f} dBm" if avg_signal_power else "N/A"
+}
 - **Peak Signal Power:** {f"{max_signal_power:.2f} dBm" if max_signal_power else "N/A"}
 """
         report_sections.append(section)
@@ -380,7 +395,9 @@ def generate_report(start_date=None, end_date=None):
 
 ## Executive Summary
 
-This report provides comprehensive trajectory and signal strength analysis for all AST SpaceMobile satellites over Midland, Texas during the period of {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}.
+This report provides comprehensive trajectory and signal strength analysis for "
+f"all AST SpaceMobile satellites over Midland, Texas during the period of "
+f"{start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}.
 
 **Location Details:**
 - **Latitude:** {MIDLAND_TX['latitude']}°N
@@ -388,13 +405,15 @@ This report provides comprehensive trajectory and signal strength analysis for a
 - **Elevation:** {MIDLAND_TX['elevation_m']} meters
 
 **Analysis Parameters:**
-- **Date Range:** {start_date.strftime('%B %d, %Y %H:%M:%S UTC')} - {end_date.strftime('%B %d, %Y %H:%M:%S UTC')}
+- **Date Range:** {start_date.strftime('%B %d, %Y %H:%M:%S UTC')} - "
+f"{end_date.strftime('%B %d, %Y %H:%M:%S UTC')}
 - **Measurement Interval:** 5 seconds
 - **Total Analysis Duration:** {duration_days} days
 - **Satellites Analyzed:** {len(AST_SATELLITES)}
 
 **AST SpaceMobile Fleet:**
-AST SpaceMobile operates a constellation of satellites designed to provide direct-to-smartphone connectivity from space. The fleet includes:
+AST SpaceMobile operates a constellation of satellites designed to provide
+direct-to-smartphone connectivity from space. The fleet includes:
 - **BlueWalker 3 (BW3):** Test satellite with the largest commercial communications array in LEO
 - **BlueBird Block 1 (1-5):** First generation commercial satellites
 
@@ -403,7 +422,9 @@ AST SpaceMobile operates a constellation of satellites designed to provide direc
 ## Methodology
 
 ### Trajectory Calculation
-Satellite trajectories are calculated using Two-Line Element (TLE) orbital parameters and the SGP4 propagator model. The Skyfield library is used for precise orbital mechanics calculations.
+Satellite trajectories are calculated using Two-Line Element (TLE) orbital parameters
+and the SGP4 propagator model. The Skyfield library is used for precise orbital
+mechanics calculations.
 
 ### Signal Strength Estimation
 Signal strength is estimated using:

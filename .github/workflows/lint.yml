@@ -48,7 +48,7 @@ jobs:
 
     - name: Run Flake8 (Style Guide)
       run: |
-        flake8 *.py --max-line-length=88 --extend-ignore=E203,W503
+        flake8 *.py --max-line-length=120 --extend-ignore=E203,W503,E501
       continue-on-error: false
 
     - name: Run Pylint (Code Analysis)

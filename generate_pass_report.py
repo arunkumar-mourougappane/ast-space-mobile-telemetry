@@ -288,7 +288,8 @@ report_md = """# AST SpaceMobile Detailed Pass Analysis Report
 
 ## Executive Summary
 
-This comprehensive report provides detailed analysis of every satellite pass for all AST SpaceMobile satellites over Midland, Texas during December 7-12, 2025. Each pass includes:
+This comprehensive report provides detailed analysis of every satellite pass for all AST SpaceMobile
+satellites over Midland, Texas during December 7-12, 2025. Each pass includes:
 
 - **Complete pass timeline** with local (CST) timestamps
 - **Signal strength visualization** showing received power and SNR over time
