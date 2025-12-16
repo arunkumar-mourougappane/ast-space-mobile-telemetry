@@ -146,8 +146,6 @@ Running the analysis pipeline generates the following files:
 
 ## Sample Analysis Results (Dec 7-12, 2025)
 
-## Sample Analysis Results (Dec 7-12, 2025)
-
 ### Satellites Tracked
 
 | Satellite        | NORAD ID | Passes  | Description                                                 |
