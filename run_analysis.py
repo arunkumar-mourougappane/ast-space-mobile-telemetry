@@ -45,9 +45,7 @@ def print_success_summary(args, start_date, end_date):
     print("\nGenerated files:")
 
     if not args.skip_data:
-        date_suffix = (
-            f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
-        )
+        date_suffix = f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
         print(f"  📊 Data: ast_satellite_data_{date_suffix}.json")
         print(f"  📊 CSV files: ast_*_{date_suffix}.csv")
 
@@ -66,9 +64,7 @@ def run_analysis_pipeline(args, start_date, end_date):
     print("\n" + "=" * 80)
     print("AST SPACEMOBILE COMPLETE ANALYSIS PIPELINE")
     print("=" * 80)
-    print(
-        f"\nDate Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}"
-    )
+    print(f"\nDate Range: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}")
     print(f"Duration: {(end_date - start_date).days + 1} days")
 
     # Step 1: Generate satellite data

@@ -101,9 +101,7 @@ def create_styled_html(md_content, title="AST SpaceMobile Satellite Report"):
     md_content = add_bookmark_ids(md_content)
 
     # Convert markdown to HTML
-    md = markdown.Markdown(
-        extensions=["tables", "fenced_code", "codehilite", "toc", "attr_list"]
-    )
+    md = markdown.Markdown(extensions=["tables", "fenced_code", "codehilite", "toc", "attr_list"])
 
     html_content = md.convert(md_content)
 
@@ -405,14 +403,11 @@ def extract_bookmarks(md_content):
 
         # Detect satellite headers
         if line.startswith("## ") and not any(
-            x in line
-            for x in ["Executive", "Understanding", "Pass Analysis", "Appendix"]
+            x in line for x in ["Executive", "Understanding", "Pass Analysis", "Appendix"]
         ):
             # Save previous satellite if exists
             if current_satellite and current_sat_bookmarks:
-                bookmarks.append(
-                    {"label": current_satellite, "children": current_sat_bookmarks}
-                )
+                bookmarks.append({"label": current_satellite, "children": current_sat_bookmarks})
 
             current_satellite = line[3:].strip()
             current_sat_bookmarks = []
@@ -448,9 +443,7 @@ def extract_bookmarks(md_content):
 
     # Add last satellite
     if current_satellite and current_sat_bookmarks:
-        bookmarks.append(
-            {"label": current_satellite, "children": current_sat_bookmarks}
-        )
+        bookmarks.append({"label": current_satellite, "children": current_sat_bookmarks})
 
     return bookmarks
 
@@ -497,9 +490,7 @@ def generate_pdf_weasyprint(md_file, output_pdf):
         html_doc.write_pdf(output_pdf, stylesheets=None, presentational_hints=True)
 
         print("  ✓ PDF generated successfully")
-        print(
-            "  ℹ Note: PDF includes HTML anchors for navigation. Bookmarks visible in advanced PDF readers."
-        )
+        print("  ℹ Note: PDF includes HTML anchors for navigation. Bookmarks visible in advanced PDF readers.")
         return True
 
     except ImportError:
@@ -559,12 +550,8 @@ def generate_pdf_reportlab(md_file, output_pdf):
         story.append(Paragraph("AST SpaceMobile", title_style))
         story.append(Paragraph("Detailed Pass Analysis Report", styles["Heading2"]))
         story.append(Spacer(1, 0.5 * inch))
-        story.append(
-            Paragraph("Signal Strength and Trajectory Analysis", styles["Normal"])
-        )
-        story.append(
-            Paragraph("Midland, Texas | December 7-12, 2025", styles["Normal"])
-        )
+        story.append(Paragraph("Signal Strength and Trajectory Analysis", styles["Normal"]))
+        story.append(Paragraph("Midland, Texas | December 7-12, 2025", styles["Normal"]))
         story.append(PageBreak())
 
         # Parse markdown and add content

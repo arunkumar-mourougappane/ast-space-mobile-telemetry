@@ -88,9 +88,7 @@ def check_python_version():
 def create_venv(venv_path):
     """Create virtual environment"""
     if venv_path.exists():
-        print(
-            f"\n{Colors.YELLOW}⚠ Virtual environment already exists at: {venv_path}{Colors.NC}"
-        )
+        print(f"\n{Colors.YELLOW}⚠ Virtual environment already exists at: {venv_path}{Colors.NC}")
         response = input("Remove and create fresh? (y/N): ").strip().lower()
 
         if response == "y":
@@ -104,9 +102,7 @@ def create_venv(venv_path):
             return True
 
     print_step("Creating virtual environment...")
-    success, stdout, stderr = run_command(
-        f'"{sys.executable}" -m venv "{venv_path}"', check=False
-    )
+    success, stdout, stderr = run_command(f'"{sys.executable}" -m venv "{venv_path}"', check=False)
 
     if not success:
         print_error("Failed to create virtual environment")
@@ -163,9 +159,7 @@ def install_packages(pip_path):
         print(f"{Colors.BLUE}  Installing {category.lower()}:{Colors.NC}")
 
         for pkg in pkgs:
-            success, _, stderr = run_command(
-                f'"{pip_path}" install {pkg}', f"    {pkg}", check=False
-            )
+            success, _, stderr = run_command(f'"{pip_path}" install {pkg}', f"    {pkg}", check=False)
 
             if not success:
                 print_error(f"Failed to install {pkg}")
@@ -208,9 +202,7 @@ for module, name in packages.items():
 sys.exit(0 if all_ok else 1)
 """
 
-    result = subprocess.run(
-        [str(python_path), "-c", verification_script], capture_output=True, text=True
-    )
+    result = subprocess.run([str(python_path), "-c", verification_script], capture_output=True, text=True)
 
     print(result.stdout)
 
@@ -288,15 +280,9 @@ def print_summary(venv_path):
     print(f"  {Colors.BLUE}deactivate{Colors.NC}\n")
 
     print(f"{Colors.YELLOW}Installed scripts:{Colors.NC}")
-    print(
-        f"  {Colors.BLUE}1. ast_satellite_report.py{Colors.NC}      - Generate satellite trajectory data"
-    )
-    print(
-        f"  {Colors.BLUE}2. generate_pass_report.py{Colors.NC}      - Analyze passes and create report"
-    )
-    print(
-        f"  {Colors.BLUE}3. generate_pdf_report.py{Colors.NC}       - Convert markdown to PDF\n"
-    )
+    print(f"  {Colors.BLUE}1. ast_satellite_report.py{Colors.NC}      - Generate satellite trajectory data")
+    print(f"  {Colors.BLUE}2. generate_pass_report.py{Colors.NC}      - Analyze passes and create report")
+    print(f"  {Colors.BLUE}3. generate_pdf_report.py{Colors.NC}       - Convert markdown to PDF\n")
 
     print(f"{Colors.GREEN}Happy tracking! 🛰️{Colors.NC}\n")
 

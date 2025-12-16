@@ -63,8 +63,8 @@ jobs:
 
     - name: Run Bandit (Security Linting)
       run: |
-        bandit -r *.py -f json -o bandit-report.json || true
-        bandit -r *.py
+        bandit *.py -f json -o bandit-report.json || true
+        bandit *.py
       continue-on-error: true
 
     - name: Check for Security Vulnerabilities in Dependencies
@@ -82,6 +82,7 @@ jobs:
           bandit-report.json
           safety-report.json
         retention-days: 30
+        if-no-files-found: ignore
 
   code-quality-summary:
     runs-on: ubuntu-latest

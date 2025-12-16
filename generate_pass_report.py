@@ -83,18 +83,14 @@ def create_signal_strength_graph(satellite_name, pass_num, pass_data, output_fil
     # Plot 1: Signal Strength
     color1 = "tab:blue"
     ax1.set_ylabel("Received Power (dBm)", color=color1, fontsize=11, fontweight="bold")
-    line1 = ax1.plot(
-        timestamps, signal_strengths, color=color1, linewidth=2, label="Signal Power"
-    )
+    line1 = ax1.plot(timestamps, signal_strengths, color=color1, linewidth=2, label="Signal Power")
     ax1.tick_params(axis="y", labelcolor=color1)
     ax1.grid(True, alpha=0.3)
 
     # Add elevation on secondary y-axis
     ax1_twin = ax1.twinx()
     color2 = "tab:orange"
-    ax1_twin.set_ylabel(
-        "Elevation (degrees)", color=color2, fontsize=11, fontweight="bold"
-    )
+    ax1_twin.set_ylabel("Elevation (degrees)", color=color2, fontsize=11, fontweight="bold")
     line2 = ax1_twin.plot(
         timestamps,
         elevations,
@@ -233,9 +229,7 @@ def generate_detailed_pass_section(satellite_name, passes):
         md += f"{end_time.strftime('%H:%M:%S')}\n\n"
 
         # Create graph
-        graph_filename = (
-            f"pass_graphs/{satellite_name.replace(' ', '_').lower()}_pass_{i:02d}.png"
-        )
+        graph_filename = f"pass_graphs/{satellite_name.replace(' ', '_').lower()}_pass_{i:02d}.png"
         create_signal_strength_graph(satellite_name, i, pass_data, graph_filename)
 
         # Embed graph
@@ -354,9 +348,7 @@ for sat_name, count in satellite_pass_counts.items():
 summary_section += "\n---\n"
 
 # Insert summary after the main header sections
-report_md = report_md.replace(
-    "## Pass Analysis by Satellite", summary_section + "## Pass Analysis by Satellite"
-)
+report_md = report_md.replace("## Pass Analysis by Satellite", summary_section + "## Pass Analysis by Satellite")
 
 # Add footer
 report_md += """

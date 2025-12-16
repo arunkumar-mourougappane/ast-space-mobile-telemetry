@@ -87,9 +87,7 @@ def fetch_tle_data(norad_id: int) -> Tuple[str, str, str]:
         return None, None, None
 
 
-def calculate_signal_strength(
-    elevation_deg: float, range_km: float, azimuth_deg: float
-) -> Dict:
+def calculate_signal_strength(elevation_deg: float, range_km: float, azimuth_deg: float) -> Dict:
     """
     Calculate estimated signal strength based on satellite position
 
@@ -234,15 +232,9 @@ def generate_report(start_date=None, end_date=None):
     print("=" * 80)
     print("AST SPACEMOBILE SATELLITE TRAJECTORY AND SIGNAL STRENGTH REPORT")
     print("=" * 80)
-    print(
-        f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, "
-        f"{abs(MIDLAND_TX['longitude'])}°W)"
-    )
+    print(f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, " f"{abs(MIDLAND_TX['longitude'])}°W)")
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
-    print(
-        f"Date Range: {start_date.strftime('%B %d, %Y')} - "
-        f"{end_date.strftime('%B %d, %Y')}"
-    )
+    print(f"Date Range: {start_date.strftime('%B %d, %Y')} - " f"{end_date.strftime('%B %d, %Y')}")
     print("Measurement Interval: 5 seconds")
     print("=" * 80)
     print()
@@ -251,9 +243,7 @@ def generate_report(start_date=None, end_date=None):
     ts = load.timescale()
 
     # Create observer location
-    observer = wgs84.latlon(
-        MIDLAND_TX["latitude"], MIDLAND_TX["longitude"], MIDLAND_TX["elevation_m"]
-    )
+    observer = wgs84.latlon(MIDLAND_TX["latitude"], MIDLAND_TX["longitude"], MIDLAND_TX["elevation_m"])
 
     all_satellite_data = {}
     report_sections = []
@@ -274,14 +264,8 @@ def generate_report(start_date=None, end_date=None):
 
             # Create simulated TLE for demonstration
             # This is a placeholder - in production, actual TLE data should be used
-            line1 = (
-                f"1 {sat_info['norad_id']:5d}U 22059A   25341.50000000  "
-                f".00000000  00000-0  00000-0 0  9999"
-            )
-            line2 = (
-                f"2 {sat_info['norad_id']:5d}  53.0000  95.0000 0001000  "
-                f"90.0000 270.0000 15.00000000000000"
-            )
+            line1 = f"1 {sat_info['norad_id']:5d}U 22059A   25341.50000000  " f".00000000  00000-0  00000-0 0  9999"
+            line2 = f"2 {sat_info['norad_id']:5d}  53.0000  95.0000 0001000  " f"90.0000 270.0000 15.00000000000000"
             name = sat_name
 
         print(f"  TLE Data Retrieved: {name}")
@@ -291,9 +275,7 @@ def generate_report(start_date=None, end_date=None):
 
         # Generate trajectory data
         print("  Calculating trajectories...")
-        positions = generate_satellite_passes(
-            satellite, observer, start_date, end_date, interval_seconds=5
-        )
+        positions = generate_satellite_passes(satellite, observer, start_date, end_date, interval_seconds=5)
 
         all_satellite_data[sat_name] = {
             "info": sat_info,
@@ -305,18 +287,12 @@ def generate_report(start_date=None, end_date=None):
         visible_positions = [p for p in positions if p["visible"]]
 
         if visible_positions:
-            avg_elevation_visible = np.mean(
-                [p["elevation_deg"] for p in visible_positions]
-            )
+            avg_elevation_visible = np.mean([p["elevation_deg"] for p in visible_positions])
             max_elevation_visible = max([p["elevation_deg"] for p in visible_positions])
             total_visible_time = len(visible_positions) * 5 / 60  # minutes
 
             # Signal statistics for visible passes
-            signal_powers = [
-                p["received_power_dbm"]
-                for p in visible_positions
-                if p["received_power_dbm"] is not None
-            ]
+            signal_powers = [p["received_power_dbm"] for p in visible_positions if p["received_power_dbm"] is not None]
             if signal_powers:
                 avg_signal_power = np.mean(signal_powers)
                 max_signal_power = max(signal_powers)
@@ -366,9 +342,7 @@ def generate_report(start_date=None, end_date=None):
         report_sections.append(section)
 
     # Generate filename suffix with date range
-    date_suffix = (
-        f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
-    )
+    date_suffix = f"{start_date.strftime('%b%d').lower()}-{end_date.strftime('%b%d').lower()}"
 
     # Save data to JSON
     json_filename = f"ast_satellite_data_{date_suffix}.json"
@@ -499,7 +473,9 @@ The following data files have been generated:
 *For questions or additional analysis, please contact the satellite operations team.*
 """
 
-    report_filename = f"AST_SpaceMobile_Satellite_Report_{start_date.strftime('%b%d')}-{end_date.strftime('%b%d-%Y')}.md"
+    report_filename = (
+        f"AST_SpaceMobile_Satellite_Report_{start_date.strftime('%b%d')}-{end_date.strftime('%b%d-%Y')}.md"
+    )
     with open(report_filename, "w") as f:
         f.write(report_content)
 
@@ -545,12 +521,8 @@ if __name__ == "__main__":
 
     try:
         # Parse dates
-        start_date = datetime.strptime(args.start, "%Y-%m-%d").replace(
-            hour=0, minute=0, second=0
-        )
-        end_date = datetime.strptime(args.end, "%Y-%m-%d").replace(
-            hour=23, minute=59, second=59
-        )
+        start_date = datetime.strptime(args.start, "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+        end_date = datetime.strptime(args.end, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
 
         # Validate dates
         if end_date < start_date:
