@@ -25,30 +25,34 @@ AST_SATELLITES = {
         "norad_id": 53807,
         "description": "Test satellite, largest commercial communications array in LEO",
     },
-    "BLUEBIRD-1": {
-        "norad_id": 60399,
-        "description": "First commercial Block 1 BlueBird satellite",
+    "BLUEBIRD-A": {
+        "norad_id": 61045,
+        "description": "Block 1 BlueBird satellite (SPACEMOBILE-003), launched Sep 2024",
     },
-    "BLUEBIRD-2": {
-        "norad_id": 60400,
-        "description": "Second commercial Block 1 BlueBird satellite",
+    "BLUEBIRD-B": {
+        "norad_id": 61046,
+        "description": "Block 1 BlueBird satellite (SPACEMOBILE-005), launched Sep 2024",
     },
-    "BLUEBIRD-3": {
-        "norad_id": 60401,
-        "description": "Third commercial Block 1 BlueBird satellite",
+    "BLUEBIRD-C": {
+        "norad_id": 61047,
+        "description": "Block 1 BlueBird satellite (SPACEMOBILE-001), launched Sep 2024",
     },
-    "BLUEBIRD-4": {
-        "norad_id": 60402,
-        "description": "Fourth commercial Block 1 BlueBird satellite",
+    "BLUEBIRD-D": {
+        "norad_id": 61048,
+        "description": "Block 1 BlueBird satellite (SPACEMOBILE-002), launched Sep 2024",
     },
-    "BLUEBIRD-5": {
-        "norad_id": 60403,
-        "description": "Fifth commercial Block 1 BlueBird satellite",
+    "BLUEBIRD-E": {
+        "norad_id": 61049,
+        "description": "Block 1 BlueBird satellite (SPACEMOBILE-004), launched Sep 2024",
+    },
+    "BLUEBIRD-6": {
+        "norad_id": 67232,
+        "description": "Block 2 BlueBird satellite (FM1), launched Dec 2025, 10x capacity of Block 1",
     },
 }
 
-# Midland, TX coordinates
-MIDLAND_TX = {"latitude": 31.9973, "longitude": -102.0779, "elevation_m": 872}
+# Odessa, TX coordinates (1 Fairway Dr, Odessa, TX 79765)
+MIDLAND_TX = {"latitude": 31.8457, "longitude": -102.3676, "elevation_m": 895}
 
 
 def fetch_tle_data(norad_id: int) -> Tuple[str, str, str]:
@@ -232,7 +236,7 @@ def generate_report(start_date=None, end_date=None):
     print("=" * 80)
     print("AST SPACEMOBILE SATELLITE TRAJECTORY AND SIGNAL STRENGTH REPORT")
     print("=" * 80)
-    print(f"Location: Midland, TX ({MIDLAND_TX['latitude']}°N, " f"{abs(MIDLAND_TX['longitude'])}°W)")
+    print(f"Location: Odessa, TX (1 Fairway Dr) ({MIDLAND_TX['latitude']}°N, " f"{abs(MIDLAND_TX['longitude'])}°W)")
     print(f"Elevation: {MIDLAND_TX['elevation_m']} meters")
     print(f"Date Range: {start_date.strftime('%B %d, %Y')} - " f"{end_date.strftime('%B %d, %Y')}")
     print("Measurement Interval: 5 seconds")
@@ -363,14 +367,14 @@ def generate_report(start_date=None, end_date=None):
     # Generate Markdown report
     report_content = f"""# AST SpaceMobile Satellite Report
 ## Trajectory and Signal Strength Analysis
-### Midland, TX - {start_date.strftime('%B %d')}-{end_date.strftime('%d, %Y')}
+### Odessa, TX (1 Fairway Dr) - {start_date.strftime('%B %d')}-{end_date.strftime('%d, %Y')}
 
 ---
 
 ## Executive Summary
 
 This report provides comprehensive trajectory and signal strength analysis for "
-f"all AST SpaceMobile satellites over Midland, Texas during the period of "
+f"all AST SpaceMobile satellites over Odessa, Texas (1 Fairway Dr, 79765) during the period of "
 f"{start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}.
 
 **Location Details:**

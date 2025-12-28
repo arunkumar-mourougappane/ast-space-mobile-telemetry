@@ -1,26 +1,22 @@
-# AST SpaceMobile Telemetry - Python Dependencies
-# ==============================================
-# Requirements for satellite tracking and reporting tools
-# 
-# Installation:
-#   pip install -r requirements.txt
-#
-# Created: December 15, 2025
+# Core dependencies for AST SpaceMobile Satellite Analysis Library
+# Python >= 3.8 required
 
-# Core scientific computing
-numpy>=1.24.0
-pandas>=2.0.0
+# Numerical computing
+numpy>=1.20.0
 
-# HTTP requests
-requests>=2.31.0
+# Data manipulation and CSV export
+pandas>=1.3.0
 
-# Orbital mechanics and satellite tracking
-skyfield>=1.46
+# HTTP requests for TLE data fetching
+requests>=2.26.0
 
-# Data visualization
-matplotlib>=3.7.0
+# Satellite orbital mechanics (SGP4 propagator)
+skyfield>=1.42
 
-# Document generation
-markdown>=3.5.0
-weasyprint>=60.0
-reportlab>=4.0
+# Visualization and graph generation
+matplotlib>=3.4.0
+
+# Optional: PDF generation (for legacy scripts)
+# Uncomment if you need PDF report generation
+# markdown>=3.3.0
+# weasyprint>=52.5

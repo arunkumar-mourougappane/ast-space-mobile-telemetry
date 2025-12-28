@@ -5,6 +5,8 @@ Creates detailed markdown report with pass tables and signal strength graphs
 
 import json
 import os
+import sys
+import glob
 from datetime import datetime, timedelta
 
 import matplotlib.dates as mdates
@@ -16,8 +18,24 @@ os.makedirs("pass_graphs", exist_ok=True)
 
 # Load the satellite data
 print("Loading satellite data...")
-with open("ast_satellite_data_dec7-12.json", "r") as f:
-    satellite_data = json.load(f)
+
+# Look for available data files
+data_files = glob.glob("ast_satellite_data_*.json")
+if not data_files:
+    print("❌ Error: No satellite data files found.")
+    print("Please run 'python run_analysis.py' first to generate the data.")
+    sys.exit(1)
+
+# Use the most recent data file
+data_file = sorted(data_files)[-1]
+print(f"Using data file: {data_file}")
+
+try:
+    with open(data_file, "r") as f:
+        satellite_data = json.load(f)
+except (json.JSONDecodeError, FileNotFoundError) as e:
+    print(f"❌ Error loading data file: {e}")
+    sys.exit(1)
 
 print(f"Loaded data for {len(satellite_data)} satellites")
 
@@ -274,25 +292,29 @@ def generate_detailed_pass_section(satellite_name, passes):
 # Main report generation
 print("\nAnalyzing satellite passes...")
 
-report_md = """# AST SpaceMobile Detailed Pass Analysis Report
+# Determine date range from data file name
+date_range = data_file.replace("ast_satellite_data_", "").replace(".json", "")
+
+report_md = f"""# AST SpaceMobile Detailed Pass Analysis Report
 ## Signal Strength and Trajectory Analysis
-### Midland, TX - December 7-12, 2025
+### Odessa, TX (1 Fairway Dr) - Analysis Period: {date_range.upper()}
 
 ---
 
 ## Executive Summary
 
 This comprehensive report provides detailed analysis of every satellite pass for all AST SpaceMobile
-satellites over Midland, Texas during December 7-12, 2025. Each pass includes:
+satellites over Odessa, Texas (1 Fairway Dr, 79765) during the analysis period. Each pass includes:
 
 - **Complete pass timeline** with local (CST) timestamps
 - **Signal strength visualization** showing received power and SNR over time
 - **Elevation profile** during each pass
 - **Detailed metrics** including duration, peak signal, and link quality
 
-**Location:** Midland, TX (31.9973°N, 102.0779°W, elevation 872m)
+**Location:** Odessa, TX - 1 Fairway Dr, 79765 (31.8457°N, 102.3676°W, elevation 895m)
 **Time Zone:** CST (Central Standard Time, UTC-6)
-**Analysis Period:** December 7, 2025 00:00 UTC to December 12, 2025 23:59 UTC
+**Analysis Period:** {date_range.upper()} UTC
+**Data File:** {data_file}
 
 ---
 
@@ -320,13 +342,32 @@ Each pass visualization includes two plots:
 
 """
 
+# Validate data structure
+if not isinstance(satellite_data, dict):
+    print("❌ Error: Invalid data structure - expected dictionary")
+    sys.exit(1)
+
+if not satellite_data:
+    print("❌ Error: No satellite data found in file")
+    sys.exit(1)
+
 # Process each satellite
 total_passes = 0
 satellite_pass_counts = {}
 
 for sat_name in satellite_data.keys():
     print(f"\nProcessing {sat_name}...")
+
+    # Validate satellite data structure
+    if not isinstance(satellite_data[sat_name], dict) or "positions" not in satellite_data[sat_name]:
+        print(f"  ⚠️  Warning: Invalid data structure for {sat_name}, skipping")
+        continue
+
     positions = satellite_data[sat_name]["positions"]
+
+    if not positions:
+        print(f"  ⚠️  Warning: No position data for {sat_name}, skipping")
+        continue
 
     # Identify passes
     passes = identify_passes(positions)
@@ -395,13 +436,13 @@ output_filename = "AST_SpaceMobile_Detailed_Pass_Report.md"
 with open(output_filename, "w") as f:
     f.write(report_md)
 
-print("\\n" + "=" * 80)
+print("\n" + "=" * 80)
 print("REPORT GENERATION COMPLETE")
 print("=" * 80)
-print(f"\\n✓ Generated {total_passes} pass graphs")
+print(f"\n✓ Generated {total_passes} pass graphs")
 print(f"✓ Report saved to: {output_filename}")
 print("✓ Graphs saved to: pass_graphs/ directory")
-print("\\nPass breakdown by satellite:")
+print("\nPass breakdown by satellite:")
 for sat_name, count in satellite_pass_counts.items():
     print(f"  - {sat_name}: {count} passes")
-print("\\n" + "=" * 80)
+print("\n" + "=" * 80)

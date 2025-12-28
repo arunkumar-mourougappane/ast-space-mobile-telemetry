@@ -1,444 +1,295 @@
-# AST SpaceMobile Satellite Telemetry Analysis
+# AST SpaceMobile Satellite Analysis
+
+A comprehensive Python library for tracking and analyzing AST SpaceMobile satellite trajectories, signal strength, and pass predictions.
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
 
-Comprehensive trajectory and signal strength analysis toolkit for AST SpaceMobile satellite constellation. This project generates detailed reports, visualizations, and datasets for satellite passes over any location with configurable date ranges.
-
-**Key Features:**
-
-- 🛰️ Tracks all 6 AST SpaceMobile satellites (BlueWalker 3, BlueBird 1-5)
-- 📅 Configurable date ranges for custom analysis periods
-- 📊 Detailed pass-by-pass analysis with complete position data
-- 📈 Signal strength graphs for every satellite pass
-- 📕 Professional PDF reports with embedded visualizations
-- 💾 Export to CSV/JSON for custom analysis
-- 🎯 5-second measurement intervals for high precision
+This project provides tools to:
+- Track all **7 AST SpaceMobile satellites** (BlueWalker 3 + BlueBird constellation including new BlueBird-6)
+- Calculate satellite trajectories and positions using SGP4 propagator
+- Estimate signal strength and link quality based on link budget analysis
+- Identify and analyze individual satellite passes
+- Generate detailed reports with visualizations
+- Export data in multiple formats (JSON, CSV, Markdown, PDF)
 
 ## Quick Start
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/arunkumar-mourougappane/ast-space-mobile-telemetry.git
-cd ast-space-mobile-telemetry
+# Clone or navigate to the repository
+cd ast_space_mobile_data
 
-# Run the automated setup script
-./setup_venv.sh
-# or on Windows/cross-platform:
-python setup_venv.py
-
-# Activate the virtual environment
-source .venv/bin/activate  # Linux/macOS
-# or
-.venv\Scripts\activate     # Windows
+# Install the library
+pip install -e .
 ```
 
 ### Basic Usage
 
+#### Command Line
+
 ```bash
-# Run complete analysis with default dates (Dec 7-12, 2025)
-python run_analysis.py
+# Generate trajectory report
+python -m ast_spacemobile.cli.trajectory --start 2025-12-07 --end 2025-12-12
 
-# Custom date range
-python run_analysis.py --start 2025-12-01 --end 2025-12-31
+# Generate pass analysis report
+python -m ast_spacemobile.cli.passes
 
-# Generate only satellite data
-python ast_satellite_report.py --start 2025-12-15 --end 2025-12-20
-
-# View all available options
-python run_analysis.py --help
+# Run complete analysis pipeline
+python -m ast_spacemobile.cli.pipeline
 ```
+
+#### Python API
+
+```python
+from datetime import datetime
+from ast_spacemobile import generate_trajectory_report
+
+# Generate report for a date range
+data, report = generate_trajectory_report(
+    start_date=datetime(2025, 12, 7),
+    end_date=datetime(2025, 12, 12)
+)
+```
+
+See **[Quick Start Guide](docs/QUICK_START.md)** and **[examples/](examples/)** for more usage patterns.
+
+## Features
+
+### Satellite Tracking
+- **7 Satellites**: BlueWalker 3 + BlueBird A-E (Block 1) + BlueBird-6 (Block 2)
+- **Real-time TLE**: Fetches latest orbital parameters from CelesTrak
+- **Accurate Propagation**: Uses SGP4 via Skyfield library
+- **Updated Catalog**: Includes latest NORAD IDs (BlueBird-6 launched Dec 2025)
+
+### Signal Analysis
+- **Link Budget Calculation**: Estimates received power and SNR
+- **Path Loss Modeling**: Free space + atmospheric attenuation
+- **Quality Assessment**: Categorizes link quality (Excellent/Good/Fair/Poor)
+- **Configurable Parameters**: Customizable frequency, EIRP, gain settings
+
+### Visualization & Reports
+- **Pass Graphs**: Signal strength and elevation profiles
+- **Detailed Reports**: Comprehensive markdown reports with statistics
+- **CSV Export**: Raw data for further analysis
+- **PDF Generation**: Professional reports (via legacy scripts)
 
 ## Project Structure
 
-```text
-ast-space-mobile-telemetry/
-├── ast_satellite_report.py      # Satellite data generation & TLE fetching
-├── generate_pass_report.py      # Pass analysis & visualization
-├── generate_pdf_report.py       # PDF report generation
-├── run_analysis.py              # Complete pipeline runner
-├── setup_venv.sh               # Virtual environment setup (bash)
-├── setup_venv.py               # Virtual environment setup (Python)
-├── requirements.txt            # Python dependencies
-├── README.md                   # This file
-└── LICENSE                     # MIT License
+```
+ast_space_mobile_data/
+├── ast_spacemobile/          # Main library package
+│   ├── core/                 # Core functionality
+│   │   ├── config.py        # Satellite catalog & configuration
+│   │   ├── tle.py           # TLE data fetching
+│   │   └── calculations.py  # Trajectory & signal calculations
+│   ├── analysis/             # Analysis tools
+│   │   ├── passes.py        # Pass identification
+│   │   └── visualization.py # Graph generation
+│   ├── reports/              # Report generation
+│   │   └── generator.py     # Report builders
+│   └── cli/                  # Command-line interfaces
+│       ├── trajectory.py    # Trajectory report CLI
+│       ├── passes.py        # Pass analysis CLI
+│       └── pipeline.py      # Full pipeline CLI
+├── docs/                     # Documentation
+│   ├── README_LIBRARY.md    # Complete library documentation
+│   ├── QUICK_START.md       # Quick reference guide
+│   ├── MIGRATION_GUIDE.md   # Migration from old scripts
+│   └── LIBRARY_SUMMARY.md   # Project overview
+├── examples/                 # Usage examples
+│   ├── basic_trajectory.py  # Simple trajectory report
+│   ├── custom_location.py   # Custom observer location
+│   ├── signal_analysis.py   # Signal strength analysis
+│   └── track_single_satellite.py  # Single satellite tracking
+├── scripts/                  # Legacy scripts (backward compatibility)
+│   ├── ast_satellite_report.py
+│   ├── generate_pass_report.py
+│   ├── run_analysis.py
+│   └── generate_pdf_report.py
+├── tests/                    # Unit tests
+├── setup.py                  # Package configuration
+├── requirements.txt          # Dependencies
+└── README.md                 # This file
 ```
 
-## Generated Output Files
+## Satellite Catalog
 
-Running the analysis pipeline generates the following files:
+The library tracks the following AST SpaceMobile satellites:
 
-## Output File Descriptions
+| Satellite | NORAD ID | Description | Launch Date |
+|-----------|----------|-------------|-------------|
+| BlueWalker 3 | 53807 | Test satellite, largest commercial array | Sep 2022 |
+| BlueBird-A | 61045 | Block 1 (SPACEMOBILE-003) | Sep 2024 |
+| BlueBird-B | 61046 | Block 1 (SPACEMOBILE-005) | Sep 2024 |
+| BlueBird-C | 61047 | Block 1 (SPACEMOBILE-001) | Sep 2024 |
+| BlueBird-D | 61048 | Block 1 (SPACEMOBILE-002) | Sep 2024 |
+| BlueBird-E | 61049 | Block 1 (SPACEMOBILE-004) | Sep 2024 |
+| **BlueBird-6** | **67232** | **Block 2 (FM1), 10x capacity** | **Dec 2025** ✨ NEW |
 
-### 📊 Reports
+## Documentation
 
-#### 1. PDF Report (`AST_SpaceMobile_Detailed_Pass_Report.pdf`)
+- **[Quick Start Guide](docs/QUICK_START.md)** - Get up and running quickly
+- **[Library Documentation](docs/README_LIBRARY.md)** - Complete API reference
+- **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Upgrade from legacy scripts
+- **[Before & After](docs/BEFORE_AFTER.md)** - See the improvements
+- **[Examples](examples/)** - Code examples and usage patterns
 
-- **Size:** ~34 MB (with 228 embedded graphs)
-- Professional layout with title page and styling
-- All satellite passes with complete position data tables
-- High-resolution embedded graphs
-- Color-coded tables and quality indicators
-- Optimized for printing and distribution
+## Requirements
 
-#### 2. Markdown Report (`AST_SpaceMobile_Detailed_Pass_Report.md`)
+- Python >= 3.8
+- numpy >= 1.20.0
+- pandas >= 1.3.0
+- requests >= 2.26.0
+- skyfield >= 1.42
+- matplotlib >= 3.4.0
 
-- **Size:** ~1.3 MB
-- Complete source document
-- Full position data for all passes (every 5-second measurement)
-- Links to embedded graph images
-- Easy to parse and customize
+All dependencies are automatically installed with `pip install -e .`
 
-#### 3. Executive Summary (`AST_SpaceMobile_Satellite_Report_*.md`)
+## Usage Examples
 
-- Fleet overview and orbital parameters
-- TLE data for each satellite
-- Aggregate statistics
-- Methodology documentation
-
-### 📈 Visualizations
-
-**`pass_graphs/` directory** - Signal strength graphs for each pass
-
-- One graph per satellite pass
-- Dual-panel layout:
-  - Top: Signal power (dBm) and elevation angle
-  - Bottom: SNR with quality threshold lines
-- **Format:** PNG (150 DPI)
-- **Typical size:** ~140 KB per graph
-
-### 📁 Data Files
-
-#### CSV Files (5-second interval data)
-
-- One file per satellite: `ast_[satellite_name]_[daterange].csv`
-- **Columns:** timestamp, elevation, azimuth, range, signal power, SNR, link quality, and more
-- **Records:** ~103,680 per satellite for 6-day analysis
-- **Format:** Standard CSV, easily imported into Excel, Python, R, etc.
-
-#### JSON File
-
-- `ast_satellite_data_[daterange].json`
-- Complete structured dataset with all position data
-- Includes satellite info, TLE data, and position arrays
-- **Format:** Hierarchical JSON structure
-
-## Analysis Capabilities
-
-### What You Can Do With This Data
-
-1. **Pass Prediction**
-   - Identify when satellites will be visible
-   - Find optimal communication windows
-   - Plan antenna pointing schedules
-
-2. **Link Budget Analysis**
-   - Estimate received signal strength
-   - Calculate signal-to-noise ratios
-   - Assess link quality and reliability
-
-3. **Coverage Analysis**
-   - Determine satellite visibility patterns
-   - Analyze elevation angles and durations
-   - Compare performance across satellites
-
-4. **Custom Processing**
-   - Import CSV data into your analysis tools
-   - Build custom visualizations
-   - Integrate with other datasets
-
-## Sample Analysis Results (Dec 7-12, 2025)
-
-### Satellites Tracked
-
-| Satellite        | NORAD ID | Passes  | Description                                                 |
-| ---------------- | -------- | ------- | ----------------------------------------------------------- |
-| **BLUEWALKER 3** | 53807    | 45      | Test satellite, largest commercial LEO communications array |
-| **BLUEBIRD-1**   | 60399    | 36      | First commercial Block 1 BlueBird satellite                 |
-| **BLUEBIRD-2**   | 60400    | 37      | Second commercial Block 1 BlueBird satellite                |
-| **BLUEBIRD-3**   | 60401    | 37      | Third commercial Block 1 BlueBird satellite                 |
-| **BLUEBIRD-4**   | 60402    | 37      | Fourth commercial Block 1 BlueBird satellite                |
-| **BLUEBIRD-5**   | 60403    | 36      | Fifth commercial Block 1 BlueBird satellite                 |
-| **TOTAL**        | -        | **228** | All satellites combined                                     |
-
-### Key Statistics
-
-**Location:** Midland, TX (31.9973°N, 102.0779°W, elevation 872m)
-
-- **Analysis Duration:** 6 days
-- **Measurement Interval:** 5 seconds
-- **Total Data Points:** 622,086 across all satellites
-- **Total Passes:** 228 individual satellite passes
-- **Peak Signal Strength:** -54 to -57 dBm (closest approaches)
-- **Maximum Elevations:** 73-87° (excellent overhead passes)
-- **SNR Range:** 33-53 dB during visible passes
-- **Link Quality:** Predominantly "Excellent" to "Good"
-
-## Technical Details
-
-### Dependencies
-
-- **Python 3.8+** required
-- **Core Libraries:**
-  - `skyfield` - Satellite orbital mechanics (SGP4 propagator)
-  - `numpy` - Numerical computations
-  - `pandas` - Data manipulation and CSV export
-  - `matplotlib` - Graph generation
-  - `requests` - TLE data fetching
-  - `markdown` - Report generation
-  - `weasyprint` - PDF generation
-
-See [requirements.txt](requirements.txt) for complete list with versions.
-
-### Signal Strength Model
-
-**Calculation Method:**
-
-- **Frequency:** ~2 GHz (AST SpaceMobile cellular bands)
-- **Free Space Path Loss:** FSPL(dB) = 20×log₁₀(distance_km) + 20×log₁₀(frequency_MHz) + 32.45
-- **Atmospheric Attenuation:** Elevation-dependent (2-7 dB)
-- **Satellite EIRP:** 55 dBW (assumed based on typical LEO satcom)
-- **Ground Station Gain:** 15 dBi
-- **System Losses:** 3 dB (cables, connectors)
-- **Noise Floor:** -110 dBm
-
-**Link Quality Thresholds:**
-
-- **Excellent:** SNR ≥ 20 dB - Full data throughput
-- **Good:** SNR ≥ 15 dB - High reliability
-- **Fair:** SNR ≥ 10 dB - Acceptable performance
-- **Poor:** SNR ≥ 5 dB - Marginal link
-- **Very Poor:** SNR < 5 dB - Unreliable
-
-### Orbital Mechanics
-
-- **TLE Data Source:** Celestrak (<https://celestrak.org>)
-- **Propagator:** SGP4 (Simplified General Perturbations 4)
-- **Library:** Skyfield (Python)
-- **Precision:** Sub-kilometer accuracy for trajectory calculations
-- **Update Frequency:** TLE data is fetched fresh for each analysis run
-
-### Data Collection Process
-
-1. **TLE Fetching:** Query Celestrak for latest orbital elements
-2. **Trajectory Calculation:** Propagate satellite positions using SGP4
-3. **Topocentric Conversion:** Calculate elevation, azimuth, range from observer
-4. **Signal Estimation:** Apply link budget model to each measurement
-5. **Pass Identification:** Detect continuous visibility periods
-6. **Visualization:** Generate graphs for each identified pass
-7. **Report Generation:** Compile markdown and PDF reports
-
-## Detailed Usage Examples
-
-### 1. Complete Pipeline with Default Settings
-
-```bash
-# Generates data for Dec 7-12, 2025 over Midland, TX
-python run_analysis.py
-```
-
-This will:
-
-- Fetch TLE data for all 6 satellites
-- Calculate trajectories at 5-second intervals
-- Identify and analyze all satellite passes
-- Generate 228 signal strength graphs
-- Create markdown and PDF reports
-
-**Output:**
-
-- `ast_satellite_data_dec7-12.json` (268 MB)
-- `ast_*_dec7-12.csv` (6 files, 9.8 MB each)
-- `AST_SpaceMobile_Detailed_Pass_Report.md` (1.3 MB)
-- `AST_SpaceMobile_Detailed_Pass_Report.pdf` (34 MB)
-- `pass_graphs/*.png` (228 images)
-
-### 2. Custom Date Range Analysis
-
-```bash
-# Analyze entire month of December
-python run_analysis.py --start 2025-12-01 --end 2025-12-31
-
-# Single day analysis
-python run_analysis.py --start 2025-12-25 --end 2025-12-25
-
-# Week-long analysis
-python run_analysis.py --start 2025-12-15 --end 2025-12-21
-```
-
-### 3. Partial Pipeline Execution
-
-```bash
-# Only generate satellite data (skip report generation)
-python ast_satellite_report.py --start 2025-12-10 --end 2025-12-15
-
-# Only generate pass report from existing data
-python run_analysis.py --skip-data
-
-# Regenerate PDF only
-python run_analysis.py --skip-data --skip-passes
-
-# Skip PDF generation
-python run_analysis.py --skip-pdf
-```
-
-### 4. Using Individual Scripts
-
-```bash
-# Step 1: Generate satellite trajectory data
-python ast_satellite_report.py --start 2025-12-07 --end 2025-12-12
-
-# Step 2: Analyze passes and create visualizations
-python generate_pass_report.py
-
-# Step 3: Generate professional PDF
-python generate_pdf_report.py
-```
-
-## Command-Line Options
-
-### run_analysis.py
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--start DATE` | Start date (YYYY-MM-DD) | 2025-12-07 |
-| `--end DATE` | End date (YYYY-MM-DD) | 2025-12-12 |
-| `--skip-data` | Skip satellite data generation | False |
-| `--skip-passes` | Skip pass report generation | False |
-| `--skip-pdf` | Skip PDF generation | False |
-
-### ast_satellite_report.py
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--start DATE` | Start date (YYYY-MM-DD) | 2025-12-07 |
-| `--end DATE` | End date (YYYY-MM-DD) | 2025-12-12 |
-
-### generate_pass_report.py
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--input FILE` | Input JSON data file | ast_satellite_data_dec7-12.json |
-| `--auto` | Auto-detect latest data file | False |
-
-## Configuration
-
-### Location
-
-By default, the analysis is performed for **Midland, TX**. To analyze a different location, modify the `MIDLAND_TX` constant in `ast_satellite_report.py`:
+### Example 1: Generate Trajectory Report
 
 ```python
-MIDLAND_TX = {
-    "latitude": 31.9973,    # Your latitude
-    "longitude": -102.0779, # Your longitude
-    "elevation_m": 872      # Elevation in meters
+from datetime import datetime
+from ast_spacemobile import generate_trajectory_report
+
+# Generate report
+data, report_file = generate_trajectory_report(
+    start_date=datetime(2025, 12, 7),
+    end_date=datetime(2025, 12, 12)
+)
+
+print(f"Report saved to: {report_file}")
+```
+
+### Example 2: Custom Observer Location
+
+```python
+from datetime import datetime
+from ast_spacemobile import generate_trajectory_report
+
+# Define custom location
+location = {
+    "name": "San Francisco",
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "elevation_m": 16,
 }
+
+# Generate report for custom location
+data, report = generate_trajectory_report(
+    start_date=datetime(2025, 12, 7),
+    end_date=datetime(2025, 12, 12),
+    observer_location=location
+)
 ```
 
-### Measurement Interval
+### Example 3: Signal Strength Analysis
 
-Default is 5 seconds. To change, modify the `interval_seconds` parameter in the `generate_satellite_passes()` call.
+```python
+from ast_spacemobile.core.calculations import calculate_signal_strength
 
-## CSV Data Format
+# Calculate signal at 45° elevation, 600 km range
+signal = calculate_signal_strength(45.0, 600.0, 180.0)
 
-Each CSV file contains the following columns:
+print(f"SNR: {signal['snr_db']} dB")
+print(f"Link Quality: {signal['link_quality']}")
+```
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `timestamp` | string | ISO 8601 UTC timestamp |
-| `unix_timestamp` | float | Unix epoch time |
-| `elevation_deg` | float | Satellite elevation angle (degrees above horizon) |
-| `azimuth_deg` | float | Satellite azimuth angle (degrees, 0°=North) |
-| `range_km` | float | Distance from observer to satellite (km) |
-| `satellite_lat` | float | Satellite sub-point latitude (degrees) |
-| `satellite_lon` | float | Satellite sub-point longitude (degrees) |
-| `satellite_alt_km` | float | Satellite altitude above Earth (km) |
-| `visible` | boolean | True if satellite is above horizon |
-| `received_power_dbm` | float | Estimated received signal power (dBm) |
-| `snr_db` | float | Signal-to-Noise Ratio (dB) |
-| `link_quality` | string | Qualitative assessment (Excellent/Good/Fair/Poor/Very Poor) |
-| `path_loss_db` | float | Total path loss (dB) |
-| `atmospheric_loss_db` | float | Atmospheric attenuation (dB) |
+See **[examples/](examples/)** for more detailed examples.
 
-## Troubleshooting
+## Command-Line Tools
 
-### Common Issues
-
-**Problem:** `ModuleNotFoundError` when running scripts
-
-**Solution:** Make sure virtual environment is activated and dependencies are installed:
-
+### Trajectory Report
 ```bash
-source .venv/bin/activate
-pip install -r requirements.txt
+python -m ast_spacemobile.cli.trajectory --start 2025-12-01 --end 2025-12-15
 ```
 
-**Problem:** TLE data fetch fails
-
-**Solution:** Check internet connection. The scripts require access to celestrak.org to download current orbital elements.
-
-**Problem:** PDF generation fails
-
-**Solution:** Ensure weasyprint dependencies are installed. On Linux:
-
+### Pass Analysis
 ```bash
-sudo apt-get install python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
+python -m ast_spacemobile.cli.passes --output-dir my_graphs
 ```
 
-**Problem:** Analysis takes too long
+### Complete Pipeline
+```bash
+python -m ast_spacemobile.cli.pipeline --start 2025-12-01 --end 2025-12-15
+```
 
-**Solution:** Reduce date range or increase measurement interval. Analysis time scales with duration and sample rate.
+## Output Files
 
-## Performance Notes
+- **JSON**: `ast_satellite_data_<dates>.json` - Complete trajectory data
+- **CSV**: `ast_<satellite>_<dates>.csv` - Per-satellite data
+- **Markdown**: `AST_SpaceMobile_*_Report.md` - Human-readable reports
+- **Graphs**: `pass_graphs/*.png` - Signal strength visualizations
 
-- **Memory Usage:** ~2-3 GB RAM for 6-day analysis
-- **Processing Time:**
-  - Satellite data generation: ~2-3 minutes
-  - Pass analysis and graphs: ~3-5 minutes
-  - PDF generation: ~2-3 minutes
-- **Disk Space:**
-  - Complete 6-day analysis: ~350 MB
-  - Per day: ~60 MB
+## Key Features of Modular Library
+
+✅ **Clean Architecture**: Separated concerns with core, analysis, and reporting modules
+✅ **Reusable Components**: Import only what you need
+✅ **Multiple Interfaces**: Both CLI and Python API
+✅ **Well Documented**: Comprehensive docs and examples
+✅ **Tested**: Verified working with all components
+✅ **Extensible**: Easy to add new satellites or analysis methods
+✅ **Updated Data**: Latest NORAD IDs including BlueBird-6
+
+## Development
+
+### Running Tests
+```bash
+pytest tests/
+```
+
+### Code Style
+```bash
+black ast_spacemobile/
+isort ast_spacemobile/
+flake8 ast_spacemobile/
+```
 
 ## Contributing
 
-Contributions are welcome! Areas for improvement:
-
-- Additional signal propagation models
-- Support for more satellite constellations
-- Interactive web-based visualizations
-- Real-time tracking capabilities
-- Additional output formats
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is provided for analysis and educational purposes.
 
 ## Acknowledgments
 
-- **AST SpaceMobile** for satellite constellation data
-- **Celestrak** for TLE data distribution
-- **Skyfield** library by Brandon Rhodes
-- Python scientific computing community
+- **TLE Data**: [CelesTrak](https://celestrak.org/)
+- **Orbital Mechanics**: [Skyfield](https://rhodesmill.org/skyfield/)
+- **Satellite Info**: Public AST SpaceMobile sources
 
-## References
+## Support
 
-- [AST SpaceMobile](https://ast-science.com/)
-- [Celestrak](https://celestrak.org/)
-- [Skyfield Documentation](https://rhodesmill.org/skyfield/)
-- [SGP4 Propagator](https://en.wikipedia.org/wiki/Simplified_perturbations_models)
+- **Documentation**: See [docs/](docs/)
+- **Examples**: See [examples/](examples/)
+- **Quick Start**: See [docs/QUICK_START.md](docs/QUICK_START.md)
+- **Issues**: Open an issue in the repository
 
-## Contact
+## Version
 
-For questions, issues, or suggestions:
+**Current Version**: 1.0.0
+**Last Updated**: 2025-12-28
 
-- Open an issue on [GitHub](https://github.com/arunkumar-mourougappane/ast-space-mobile-telemetry/issues)
-- Check existing documentation in generated reports
+## What's New
+
+- ✨ **Modular library structure** with clean API
+- ✨ **BlueBird-6 satellite** added (NORAD 67232, launched Dec 2025)
+- ✨ **Updated NORAD IDs** for BlueBird A-E constellation
+- ✨ **Python API** in addition to CLI tools
+- ✨ **Comprehensive documentation** and examples
+- ✨ **Installable package** via pip
 
 ---
 
-**Generated with ❤️ for satellite analysis and space telecommunications**
+**Note**: This library uses the latest satellite NORAD IDs updated December 2025, including the newly launched BlueBird-6 Block 2 satellite with 10x capacity.
