@@ -16,6 +16,10 @@ skyfield>=1.42
 # Visualization and graph generation
 matplotlib>=3.4.0
 
+# GUI support (GTK3)
+# Note: PyGObject requires system packages - see docs/GUI_SETUP.md
+PyGObject>=3.40.0
+
 # Optional: PDF generation (for legacy scripts)
 # Uncomment if you need PDF report generation
 # markdown>=3.3.0
